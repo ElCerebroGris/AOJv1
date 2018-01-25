@@ -1,0 +1,4 @@
+name=aojv1
+files=
+database=
+root=admin pass=123
