@@ -22,51 +22,59 @@
     <body>
         <c:import url="../templates/header.jsp"/>
         <div class="container">
-            
+
 
             <div class="row alert">
-                
+
                 <div class="col-md-4">                    
                     <c:import url="../templates/menu_esquerdo.jsp"/>
                 </div>
-                
+
                 <div class="col-md-8">
-                    
-                    <a href="<c:url value="add_problem_form" />" class="btn btn-primary">New problem</a><br><br>
 
-                    <table id="tabela" class="table table-bordered text-center">
-                        <thead>
-                            <tr class="bg-primary">
-                                <th class="text-center">ID</th>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">Category</th>
-                                <th class="text-center hidden-xs">Pontuation</th>
-                                <th class="text-center">Visible</th>
-                                <th class="text-center">Option</th>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <p class="panel-title">Problems</p>
+                        </div>
+                        <div class="panel-body">
+                            <table id="tabela" class="table table-bordered text-center">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">Category</th>
+                                        <th class="text-center hidden-xs">Pontuation</th>
+                                        <th class="text-center">Visible</th>
+                                        <th class="text-center">Option</th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${problemas}" var="p">
-                                <tr>
-                                    <td>${p.id}</td>
-                                    <td><a href="verProblema?id=${p.id}">${p.nome}</a></td>
-                                    <td>Math</td>
-                                    <td class="hidden-xs">${p.pontos}</td>
-                                    <td>${p.visible}</td>
-                                    <td>
-                                        <c:if test="${p.visible eq true}">
-                                            <a href="disable?pid=${p.id}" class="btn btn-danger">Disable</a>
-                                        </c:if>
-                                        <c:if test="${p.visible eq false}">
-                                            <a href="active?pid=${p.id}" class="btn btn-primary">Active</a>
-                                        </c:if>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${problemas}" var="p">
+                                        <tr>
+                                            <td>${p.id}</td>
+                                            <td><a href="verProblema?id=${p.id}">${p.nome}</a></td>
+                                            <td>Math</td>
+                                            <td class="hidden-xs">${p.pontos}</td>
+                                            <td>${p.visible}</td>
+                                            <td>
+                                                <c:if test="${p.visible eq true}">
+                                                    <a href="disable?pid=${p.id}" class="btn btn-danger">Disable</a>
+                                                </c:if>
+                                                <c:if test="${p.visible eq false}">
+                                                    <a href="active?pid=${p.id}" class="btn btn-primary">Active</a>
+                                                </c:if>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel-footer">
+                            <a href="<c:url value="add_problem_form" />" class="btn btn-primary">
+                                New problem</a><br><br>
+                        </div>
+                    </div>
                 </div>
             </div>
 

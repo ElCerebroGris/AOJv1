@@ -16,9 +16,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
         <link href="css/style.css" rel="stylesheet">
-        <script type="text/javascript" href="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
     </head>
-    
+
     <body>
         <c:import url="templates/header.jsp"/>
         <div class="container">
@@ -32,30 +33,36 @@
                     <c:if test="${admin eq true}">
                         <a href="<c:url value="/add_problem" />">Add probem</a>
                     </c:if>
-
-                    <table id="tabela" class="table table-bordered text-center">
-                        <thead>
-                            <tr class="bg-primary">
-                                <th class="text-center">ID</th>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">AC</th>
-                                <th class="text-center">AC%</th>
-                                <th class="text-center hidden-xs">Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${problemas}" var="p">
-                                <tr>
-                                    <td>${p.id}</td>
-                                    <td><a href="verProblema?id=${p.id}">${p.nome}</a></td>
-                                    <td>${p.ac}</td>
-                                    <td>${p.percentagem}</td>
-                                    <td class="hidden-xs">${p.pontos}</td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-
+                        
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <p class="panel-title">Problems</p>
+                        </div>
+                        <div class="panel-body">
+                            <table id="tabela" class="table table-bordered text-center table-responsive">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">AC</th>
+                                        <th class="text-center">AC%</th>
+                                        <th class="text-center hidden-xs">Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${problemas}" var="p">
+                                        <tr>
+                                            <td>${p.id}</td>
+                                            <td><a href="verProblema?id=${p.id}">${p.nome}</a></td>
+                                            <td>${p.ac}</td>
+                                            <td>${p.percentagem}</td>
+                                            <td class="hidden-xs">${p.pontos}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 

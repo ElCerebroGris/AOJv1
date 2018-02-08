@@ -17,43 +17,47 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
         <link href="css/style.css" rel="stylesheet">
-        <script type="text/javascript" href="js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
         <link rel="stylesheet" type="text/css" href="css/TimeCircles.css" />
-        <script type="text/javascript" href="js/jquery.min.js"></script>
-        <script type="text/javascript" href="js/TimeCircles.js"></script>
+        <script type="text/javascript" src="js/TimeCircles.js"></script>
 
     </head>
 
     <body>
         <c:import url="../templates/header.jsp"/>
 
-        <div class="row alert">
-            <div class="col-md-4">
-                <c:import url="../templates/menu_esquerdo.jsp"/>
-            </div>
-            <div class="col-md-8">
-                
-                <div id="circles" data-timer="1000000"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <c:import url="../templates/menu_contest.jsp"/>
+                </div>
+                <div class="col-md-8">
 
-                <div class="panel panel-default"> 
-                    <div class="panel-heading"> 
-                        <h3 class="panel-title">Overview Contest</h3> 
-                    </div> 
-                    <div class="panel-body"> 
-                        <ul class="list-group">
-                            <li class="list-group-item">ID: ${contest.id}</li>
-                            <li class="list-group-item">Name: ${contest.nome}</li>
-                            <li class="list-group-item">Start at: ${contest.inicio}</li>
-                            <li class="list-group-item">End at: ${contest.fim}</li>
-                        </ul>
-                    </div> 
+                    <div class="panel panel-default"> 
+                        <div class="panel-heading"> 
+                            <h3 class="panel-title">Overview Contest</h3> 
+                        </div> 
+                        <div class="panel-body"> 
+                            <ul class="list-group">
+                                <li class="list-group-item">ID: ${contest.id}</li>
+                                <li class="list-group-item">Name: ${contest.nome}</li>
+                                <li class="list-group-item">Start at: ${contest.inicio}</li>
+                                <li class="list-group-item">End at: ${contest.fim}</li>
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <div id="exemplo" data-date="${contest.time_long}"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <script>
             $(document).ready(function () {
-                $("#circles").TimeCircles();
+                $("#exemplo").TimeCircles({circle_bg_color: "white", fg_width: 0.01, text_size: 0.06});
             });
         </script>
     </body>

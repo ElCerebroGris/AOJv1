@@ -33,25 +33,30 @@
                     <div class="col-md-8">
                         <div class="row">
 
-                            <div class="col-md-12">
-                                <c:if test="${online eq true}">
-                                    <div class="form-group ss">
-                                        <form action="<c:url value="/comentar"/>" method="post">
-                                            <textarea name="texto" class="form-control" id="txtarea" rows="5" id="comment" 
-                                                      style="max-width:100%;max-height:95px;" placeholder="Ask here..."></textarea>
-                                            <input type="submit" class="btn btn-primary pull-right exc" id="btt" value="Share" />
-                                        </form>
-                                    </div>
-                                </c:if>
-                                <br><br>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <p class="panel-title">Forum</p>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-12">
+                                        <c:if test="${online eq true}">
+                                            <div class="form-group ss">
+                                                <form action="<c:url value="/comentar"/>" method="post">
+                                                    <textarea name="texto" class="form-control" id="txtarea" rows="5" id="comment" 
+                                                              style="max-width:100%;max-height:95px;" placeholder="Ask here..."></textarea>
+                                                    <input type="submit" class="btn btn-primary pull-right exc" id="btt" value="Share" />
+                                                </form>
+                                            </div>
+                                        </c:if>
+                                        <br><br>
 
-                                <table>
-                                    <tr class="bg-primary">
-                                        <th class="text-center">#</th>
-                                    </tr>
-                                    <c:forEach items="${mural}" var="m">
-                                        <tr>
-                                            
+                                        <table>
+                                            <tr class="bg-primary">
+                                                <th class="text-center">#</th>
+                                            </tr>
+                                            <c:forEach items="${mural}" var="m">
+                                                <tr>
+
                                                 <div class="media fst">
                                                     <div class="media-left">
                                                         <img src="img/img_avatar.png" class="media-object" style="width:60px">
@@ -63,12 +68,14 @@
                                                     </div>
 
                                                 </div>
-                                            
-                                        </tr>
 
-                                    </c:forEach>
-                                </table>
+                                                </tr>
 
+                                            </c:forEach>
+                                        </table>
+
+                                    </div>
+                                </div>
                             </div>
 
                             <nav>

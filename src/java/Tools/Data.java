@@ -5,6 +5,8 @@
  */
 package Tools;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,4 +28,10 @@ public class Data {
                 data.get(Calendar.HOUR)+":"+data.get(Calendar.MINUTE)+":"+data.get(Calendar.SECOND);
     }
     
+    public static String FormatarData(Date data) throws ParseException{
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date d = sdf1.parse(data.getYear()+"-"+data.getMonth()+"-"+data.getDay()
+        +" "+data.getHours()+":"+data.getMinutes()+":"+data.getSeconds());
+        return sdf1.format(d);
+    }
 }

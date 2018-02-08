@@ -34,10 +34,9 @@ public class ContestRepositorioImpl implements ContestRepositorio {
     @Override
     public List<Contest> listar_contest() {
         List<Contest> l = new ArrayList<>();
-        Date d1 = new Date(2017, 11, 2, 9, 30);
         
-        l.add(new Contest(1,"Progressive L1", new Date(2017, 11, 2, 9, 30), new Date(2017, 11, 2, 14, 30), 20));
-        l.add(new Contest(2,"Progressive L2", new Date(2017, 11, 3, 9, 30), new Date(2017, 11, 3, 14, 30), 20));
+        l.add(new Contest(1,"Progressive L1", new Date(2018, 1, 30, 21, 5), new Date(2018, 1, 30, 21, 30)));
+        l.add(new Contest(2,"Progressive L2", new Date(2018, 2, 30, 21, 30), new Date(2017, 11, 3, 14, 30)));
         return l;
     }
 
@@ -48,7 +47,7 @@ public class ContestRepositorioImpl implements ContestRepositorio {
 
     @Override
     public Contest get_contest(int id) {
-        return new Contest(id,"Progressive L2", new Date(2017, 11, 3, 9, 30), new Date(2017, 11, 3, 14, 30), 20);
+        return new Contest(id,"Progressive L2", new Date(2018, 02, 29, 9, 30), new Date(2018, 02, 29, 14, 30));
     }
     
     
