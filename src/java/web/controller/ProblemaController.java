@@ -54,7 +54,6 @@ public class ProblemaController {
                 lista = admin_repositorio.listarProblema();
                 model.addAttribute("problemas", lista);
                 model.addAttribute("admin", true);
-                return "admin/problems";
             } else {
                 model.addAttribute("admin", false);
             }
@@ -88,12 +87,6 @@ public class ProblemaController {
                 online.getLogin());
         repositorio.submeter(s);
         return "redirect:status";
-    }
-
-    @RequestMapping(value = "/addproblem", method = POST)
-    public String add_problem(Model model, HttpSession sessao) {
-        roles(model, sessao);
-        return "redirect:problems";
     }
 
     @RequestMapping(value = "/verProblema", method = GET)

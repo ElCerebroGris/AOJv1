@@ -18,22 +18,25 @@ import java.util.Vector;
  */
 public class Contest {
 
-    private int id;
+    private long id;
     private String nome;
     private Date inicio;
     private Date fim;
     private Vector<Integer> users;
-    private Vector<Integer> problems;
+    private Vector<Problema> problems;
     private String time_long;
     private boolean coming;
     private boolean running;
     private boolean past;
 
     public Contest() {
+        
+        users = new Vector<>();
+        problems = new Vector<>();
 
     }
 
-    public Contest(String nome, Date inicio, Date fim, Vector<Integer> users, Vector<Integer> problems) {
+    public Contest(String nome, Date inicio, Date fim, Vector<Integer> users, Vector<Problema> problems) {
         this.nome = nome;
         this.inicio = inicio;
         this.fim = fim;
@@ -41,7 +44,7 @@ public class Contest {
         this.problems = problems;
     }
 
-    public Contest(int id, String nome, Date inicio, Date fim, Vector<Integer> users, Vector<Integer> problems) {
+    public Contest(long id, String nome, Date inicio, Date fim, Vector<Integer> users, Vector<Problema> problems) {
         this.id = id;
         this.nome = nome;
         this.inicio = inicio;
@@ -50,18 +53,20 @@ public class Contest {
         this.problems = problems;
     }
 
-    public Contest(int id, String nome, Date inicio, Date fim) {
+    public Contest(long id, String nome, Date inicio, Date fim) {
         this.nome = nome;
         this.inicio = inicio;
         this.fim = fim;
         this.id = id;
+        users = new Vector<>();
+        problems = new Vector();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -73,16 +78,16 @@ public class Contest {
         this.nome = nome;
     }
 
-    public String getInicio() throws ParseException {
-        return Data.FormatarData(inicio);
+    public Date getInicio() {
+        return inicio;
     }
 
     public void setInicio(Date inicio) {
         this.inicio = inicio;
     }
 
-    public String getFim() throws ParseException {
-        return Data.FormatarData(fim);
+    public Date getFim(){
+        return fim;
     }
 
     public void setFim(Date fim) {
@@ -97,16 +102,16 @@ public class Contest {
         this.users = users;
     }
 
-    public Vector<Integer> getProblems() {
+    public Vector<Problema> getProblems() {
         return problems;
     }
 
-    public void setProblems(Vector<Integer> problems) {
+    public void setProblems(Vector<Problema> problems) {
         this.problems = problems;
     }
 
-    public String getTime_long() throws ParseException {
-        return Data.FormatarData(inicio);
+    public String getTime_long(){
+        return Data.toString(inicio);
     }
 
     public boolean isComing() {
@@ -122,8 +127,10 @@ public class Contest {
     }
 
     public boolean isPast() {
-        Calendar c = Calendar.getInstance();
-        return c.after(fim);
+        if(getInicio().getTime() - new Date().getTime()<0L)
+            return true;
+        else
+            return false;
     }
 
 }

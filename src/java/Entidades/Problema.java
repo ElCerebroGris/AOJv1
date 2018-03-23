@@ -24,15 +24,20 @@ public class Problema {
     private int total;
 
     private float percentagem;
+    
+    //Para concurso
+    private String letra;
 
     public Problema() {
 
     }
 
-    public Problema(long id, String nome, String url_file) {
+    //Para concurso
+    public Problema(long id, String nome, String url_file, String letra) {
         this.id = id;
         this.nome = nome;
         this.url_file = url_file;
+        this.letra = letra;
     }
 
     //Pra Receber
@@ -128,6 +133,14 @@ public class Problema {
 
     public void setPercentagem(float percentagem) {
         this.percentagem = percentagem;
+    }
+
+    public String getLetra() {
+        return letra;
+    }
+
+    public void setLetra(String letra) {
+        this.letra = letra;
     }
 
 }

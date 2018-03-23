@@ -44,6 +44,27 @@ public class Ficheiro {
         }
         return f.getAbsolutePath();
     }
+    
+    public static String gerarFicheiroContest(Submissao s, int quant, String linguagem) {
+        File f = null;
+        if (linguagem.endsWith("C++")) {
+            f = new File(Iniciar.getUrl()+"Envios/Contest/S_" + quant + "_" + s.getId_usuario() + "_"
+                    + s.getId_problema() + ".cpp");
+        } else {
+            f = new File(Iniciar.getUrl()+"Envios/Contest/S_" + quant + "_"+s.getId_contest()+"_" + 
+                    s.getId_usuario() + "_" + s.getId_problema() + "."+linguagem);
+        }
+        try {
+            f.createNewFile();
+            PrintWriter p = new PrintWriter(f);
+            p.append(s.getCodigo());
+            p.flush();
+            p.close();
+        } catch (Exception ex) {
+            return "Erro ao criar arquivo";
+        }
+        return f.getAbsolutePath();
+    }
 
     public static String[] gerarFicheiroProblema(long id, String texto,
             String exemploEntrada, String exemploSaida,String exp_entrada, String exp_saida) {

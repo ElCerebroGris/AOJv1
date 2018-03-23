@@ -8,6 +8,7 @@ package Modelo;
 import BD.ConectaNormal;
 import Entidades.Problema;
 import Entidades.ProblemaAd;
+import Entidades.Usuario;
 import Tools.Ficheiro;
 import Tools.Iniciar;
 import java.io.File;
@@ -111,6 +112,36 @@ public class AdminRepositorioImpl implements AdminRepositorio {
             JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD");
         }
     }
+    
+    @Override
+    public void makeAdmin(long uid) {
+        try {
+            Connection connect = ConectaNormal.getConnection();
+
+            String sql = "UPDATE usuario SET role=0 WHERE id_usuario=" + uid + ";";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeUpdate();
+            connect.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD");
+        }
+    }
+
+    @Override
+    public void unmakeAdmin(long uid) {
+        try {
+            Connection connect = ConectaNormal.getConnection();
+
+            String sql = "UPDATE usuario SET role=2 WHERE id_usuario=" + uid + ";";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeUpdate();
+            connect.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD");
+        }
+    }
 
     @Override
     public ProblemaAd createProblem(ProblemaAd p) {
@@ -186,5 +217,32 @@ public class AdminRepositorioImpl implements AdminRepositorio {
         }
         return r;
     }
+
+    @Override
+    public List<Usuario> listarUsuario() {
+        List<Usuario> lista = new ArrayList<>();
+
+        try {
+            Connection connect = ConectaNormal.getConnection();
+            String sql = "SELECT * FROM usuario order by id_usuario asc;";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(new Usuario(rs.getLong("id_usuario"), rs.getInt("role"), rs.getString("login"),
+                        rs.getString("senha"), rs.getString("nome_usuario"), rs.getString("ultimo_nome"),
+                        rs.getString("email"), rs.getString("gender"), rs.getString("country"),
+                        rs.getString("institution"), rs.getFloat("pontos"), rs.getBoolean("state"),
+                        rs.getString("last_submission"), rs.getInt("solved")));
+            }
+            connect.close();
+            return lista;
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
+        }
+        return lista;
+    }
+
 
 }

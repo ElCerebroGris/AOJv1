@@ -53,10 +53,10 @@ public class RepositorioMasterImpl implements RepositorioMaster {
             String sql = "insert into submissao(id_sublmissao , id_usuario, id_problema, url, linguagem, status, "
                     + "data_submissao, usuario) "
                     + "values (" + c + "," + s.getId_usuario() + "," + s.getId_problema()
-                    + ",'" + s.getUrl() + "','" + s.getLinguagem() + "','Evaluating','"+d.toString()+"',"
-                    + "'"+s.getLogin_user()+"');";           
-            
-            String update = "update usuario set last_submission='"+d.toString()+"' where id_usuario="
+                    + ",'" + s.getUrl() + "','" + s.getLinguagem() + "','Evaluating','" + d.toString() + "',"
+                    + "'" + s.getLogin_user() + "');";
+
+            String update = "update usuario set last_submission='" + d.toString() + "' where id_usuario="
                     + s.getId_usuario() + ";";
 
             PreparedStatement ps = connect.prepareStatement(sql);
@@ -148,15 +148,16 @@ public class RepositorioMasterImpl implements RepositorioMaster {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.executeQuery();
             ResultSet rs = ps.executeQuery();
-            rs.next();
-            p = new ProblemaAd(rs.getLong("id_problema"), rs.getString("nome_problema"),rs.getInt("tempo_limite"),
-                    rs.getString("texto_problema"),rs.getString("exp_entrada"), rs.getString("exp_saida"),
-                    rs.getString("exemplo_entrada"), rs.getString("exemplo_saida"), rs.getString("usuario"));
-            p.setTexto(Ficheiro.pegarTexto(p.getTexto()));
-            p.setExpecificacaoEntrada(Ficheiro.pegarTexto(p.getExpecificacaoEntrada()));
-            p.setExpecificacaoSaida(Ficheiro.pegarTexto(p.getExpecificacaoSaida()));
-            p.setExemploEntrada(Ficheiro.pegarTexto(p.getExemploEntrada()));
-            p.setExemploSaida(Ficheiro.pegarTexto(p.getExemploSaida()));
+            if (rs.next()) {
+                p = new ProblemaAd(rs.getLong("id_problema"), rs.getString("nome_problema"), rs.getInt("tempo_limite"),
+                        rs.getString("texto_problema"), rs.getString("exp_entrada"), rs.getString("exp_saida"),
+                        rs.getString("exemplo_entrada"), rs.getString("exemplo_saida"), rs.getString("usuario"));
+                p.setTexto(Ficheiro.pegarTexto(p.getTexto()));
+                p.setExpecificacaoEntrada(Ficheiro.pegarTexto(p.getExpecificacaoEntrada()));
+                p.setExpecificacaoSaida(Ficheiro.pegarTexto(p.getExpecificacaoSaida()));
+                p.setExemploEntrada(Ficheiro.pegarTexto(p.getExemploEntrada()));
+                p.setExemploSaida(Ficheiro.pegarTexto(p.getExemploSaida()));
+            }
             connect.close();
             return p;
         } catch (SQLException ex) {
@@ -215,7 +216,7 @@ public class RepositorioMasterImpl implements RepositorioMaster {
             String sql = "SELECT * FROM mural ORDER BY data_mural desc;";
 
             PreparedStatement ps = connect.prepareStatement(sql);
-            ps.executeQuery();  
+            ps.executeQuery();
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Date dt = rs.getDate("data_mural");

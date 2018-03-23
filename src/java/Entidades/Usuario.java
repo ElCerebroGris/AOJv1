@@ -6,12 +6,13 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 /**
  *
  * @author Zamba
  */
-public class Usuario implements Serializable{
+public class Usuario implements Serializable, Comparable<Usuario>{
     
     private long id;
     private int role;
@@ -29,8 +30,12 @@ public class Usuario implements Serializable{
     private boolean state;
     private String last_submission;
     private int solved;
+    //Contest
+    private Vector<Integer> problems;
+    private boolean contestant;
 
     public Usuario(){
+        problems = new Vector<>();
     }
 
     public Usuario(int role, String login, String password, String first_name, String last_name, String email, 
@@ -48,6 +53,7 @@ public class Usuario implements Serializable{
         this.institution = institution;
         this.gui_language = gui_language;
         this.pontos = pontos;
+        problems = new Vector<>();
     }
 
     public Usuario(long id, int role, String login, String password, String first_name, String last_name, 
@@ -66,6 +72,7 @@ public class Usuario implements Serializable{
         this.institution = institution;
         this.gui_language = gui_language;
         this.pontos = pontos;
+        problems = new Vector<>();
     }
 
     public Usuario(long id, int role, String login, String password, String first_name, String last_name, 
@@ -79,6 +86,7 @@ public class Usuario implements Serializable{
         this.email = email;
         this.gender = gender;
         this.pontos = pontos;
+        problems = new Vector<>();
     }
 
     public Usuario(long id, int role, String login, String password, String first_name, String last_name, 
@@ -98,6 +106,7 @@ public class Usuario implements Serializable{
         this.state = state;
         this.last_submission = last_submission;
         this.solved = solved;
+        problems = new Vector<>();
     }
 
     public Usuario(long id, String login, String gender, String country, String institution, float pontos, String last_submission, int solved) {
@@ -109,6 +118,7 @@ public class Usuario implements Serializable{
         this.pontos = pontos;
         this.last_submission = last_submission;
         this.solved = solved;
+        problems = new Vector<>();
     }
     
     
@@ -240,5 +250,40 @@ public class Usuario implements Serializable{
     public void setSolved(int solved) {
         this.solved = solved;
     }
+
+    public Vector<Integer> getProblems() {
+        return problems;
+    }
+
+    public void setProblems(Vector<Integer> problems) {
+        this.problems = problems;
+    }
+
+    public boolean isContestant() {
+        return contestant;
+    }
+
+    public void setContestant(boolean contestant) {
+        this.contestant = contestant;
+    }
+    
+    @Override
+    public int compareTo(Usuario o) {
+        int m1=0;
+        int m2=0;
+        for (int i = 0; i < o.getProblems().size(); i++) {
+            if(problems.get(i)>0)
+                ++m1;
+            if(o.getProblems().get(i)>0)
+                ++m2;
+        }
+        if(m1==m2)
+            return 0;
+        if(m1>m2)
+            return -1;
+        return 1;
+    }
+    
+    
     
 }

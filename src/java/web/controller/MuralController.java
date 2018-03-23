@@ -37,6 +37,7 @@ public class MuralController {
             @RequestParam("texto") String texto) {
         Usuario u = (Usuario) sessao.getAttribute("usuario");
         repositorio.comentar(new Comentario(u.getLogin(), texto));
+        
         return "redirect:index";
     }
     

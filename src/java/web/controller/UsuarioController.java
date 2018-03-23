@@ -53,8 +53,21 @@ public class UsuarioController {
 
     @RequestMapping(value = "perfil", method = GET)
     public String userProfile(int uid, HttpServletRequest request, Model model, HttpSession sessao) {
-        Usuario u = repositorio.procurarPorId(uid);
-        model.addAttribute("user", u);
+        Usuario u1 = repositorio.procurarPorId(uid);
+        model.addAttribute("user", u1);
+        
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+        if (u == null) {
+            model.addAttribute("online", false);
+        } else {
+            model.addAttribute("online", true);
+            if (u.getRole() == 0) {
+                model.addAttribute("admin", true);
+            } else {
+                model.addAttribute("admin", false);
+            }
+        }
+        
         return "user_profile";
     }
 
@@ -70,7 +83,6 @@ public class UsuarioController {
             model.addAttribute("online", true);
             if (u.getRole() == 0) {
                 model.addAttribute("admin", true);
-                return "admin/users";
             } else {
                 model.addAttribute("admin", false);
             }

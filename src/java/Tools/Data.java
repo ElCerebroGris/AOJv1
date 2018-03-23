@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -28,10 +29,28 @@ public class Data {
                 data.get(Calendar.HOUR)+":"+data.get(Calendar.MINUTE)+":"+data.get(Calendar.SECOND);
     }
     
-    public static String FormatarData(Date data) throws ParseException{
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date d = sdf1.parse(data.getYear()+"-"+data.getMonth()+"-"+data.getDay()
-        +" "+data.getHours()+":"+data.getMinutes()+":"+data.getSeconds());
-        return sdf1.format(d);
+    public static String toString(Date data) {
+        return (data.getYear()+1900)+"/"+(data.getMonth()+1)+"/"+data.getDate()+" "+
+                data.getHours()+":"+data.getMinutes()+":"+data.getSeconds();
+    }
+    
+    public static Date FormatarData(String d){
+        Date data = new Date();
+        String [] l = d.split("/");
+        
+        data.setYear(Integer.parseInt(l[0])-1900);
+        data.setMonth(Integer.parseInt(l[1])-1);
+        data.setDate(Integer.parseInt(l[2]));
+        return data;
+    }
+    
+    public static Date FormatarData2(String d){
+        Date data = new Date();
+        String [] l = d.split("/");
+        
+        data.setYear(Integer.parseInt(l[0]));
+        data.setMonth(Integer.parseInt(l[1]));
+        data.setDate(Integer.parseInt(l[2]));
+        return data;
     }
 }

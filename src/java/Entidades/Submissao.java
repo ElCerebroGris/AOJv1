@@ -23,6 +23,9 @@ public class Submissao {
     private String codigo;
     private String login_user;
     
+    //Para concurso
+    private long id_contest;
+    
     public Submissao(){}
 
     //Pra enviar
@@ -34,6 +37,15 @@ public class Submissao {
         this.url = url;
         this.linguagem = linguagem;
         this.login_user = usuario;
+    }
+    
+    //Pra enviar Contest
+    public Submissao(long id_problema, long id_usuario, long id_contest,String codigo, String linguagem) {
+        this.id_problema = id_problema;
+        this.id_usuario = id_usuario;
+        this.codigo = codigo;
+        this.linguagem = linguagem;
+        this.id_contest = id_contest;
     }
 
     //Pra receber
@@ -118,6 +130,14 @@ public class Submissao {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public long getId_contest() {
+        return id_contest;
+    }
+
+    public void setId_contest(long id_contest) {
+        this.id_contest = id_contest;
     }
     
     

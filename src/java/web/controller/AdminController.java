@@ -6,12 +6,15 @@
 package web.controller;
 
 import Entidades.Contest;
+import Entidades.Problema;
 import Entidades.ProblemaAd;
 import Entidades.Usuario;
 import Modelo.AdminRepositorio;
 import Modelo.ContestRepositorio;
+import Modelo.RepositorioMaster;
 import Modelo.UsuarioRepositorio;
 import Tools.ConfSingleton;
+import Tools.Data;
 import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
@@ -36,16 +39,18 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class AdminController {
 
-    private ContestRepositorio repositorio;
-    private UsuarioRepositorio repositorio2;
+    private ContestRepositorio repositorio_contest;
+    private UsuarioRepositorio respositorio_usuario;
+    private RepositorioMaster repositorio;
     private AdminRepositorio admin_repo;
 
     @Autowired
-    public AdminController(ContestRepositorio repositorio, UsuarioRepositorio repositorio2,
-            AdminRepositorio admin_repo) {
-        this.repositorio = repositorio;
-        this.repositorio2 = repositorio2;
+    public AdminController(ContestRepositorio repositorio_contest, UsuarioRepositorio repositorio2,
+            AdminRepositorio admin_repo, RepositorioMaster repositorio) {
+        this.repositorio_contest = repositorio_contest;
+        this.respositorio_usuario = repositorio2;
         this.admin_repo = admin_repo;
+        this.repositorio = repositorio;
     }
 
     @RequestMapping(value = {"/admin_server"}, method = GET)
@@ -76,7 +81,7 @@ public class AdminController {
 
         if (u == null) {
             model.addAttribute("online", false);
-
+            return "redirect:index";
         } else {
             model.addAttribute("online", true);
 
@@ -106,13 +111,25 @@ public class AdminController {
     @RequestMapping(value = {"/disable_user"}, method = GET)
     public String des_user(int uid) {
         admin_repo.desabilitarUser(uid);
-        return "redirect:ranking";
+        return "redirect:users_admin";
     }
 
     @RequestMapping(value = {"/active_user"}, method = GET)
     public String active_user(int uid) {
         admin_repo.abilitarUser(uid);
-        return "redirect:ranking";
+        return "redirect:users_admin";
+    }
+
+    @RequestMapping(value = {"/make_admin"}, method = GET)
+    public String make_admin(int uid) {
+        admin_repo.makeAdmin(uid);
+        return "redirect:users_admin";
+    }
+
+    @RequestMapping(value = {"/unmake_admin"}, method = GET)
+    public String unmake_admin(int uid) {
+        admin_repo.unmakeAdmin(uid);
+        return "redirect:users_admin";
     }
 
     @RequestMapping(value = "/add_problem", method = RequestMethod.POST)
@@ -143,45 +160,47 @@ public class AdminController {
         return "redirect:problems";
     }
 
-    @RequestMapping(value = {"/preview"}, method = GET)
-    public String view_contest(int cid, Model model, HttpSession sessao) {
-        Contest c = repositorio.get_contest(cid);
-        model.addAttribute("contest", c);
-        roles(model, sessao);
-        return "contest/preview_contest";
-    }
+    @RequestMapping(value = "users_admin", method = RequestMethod.GET)
+    public String usersadmin(Model model, HttpSession sessao) {
 
-    @RequestMapping(value = {"/list_contest"}, method = GET)
-    public String list_contest(Model model, HttpSession sessao) {
-        List<Contest> lista = repositorio.listar_contest();
-        model.addAttribute("contests", lista);
-        roles(model, sessao);
-        return "contest/list_contests";
-    }
-
-    @RequestMapping(value = {"/add_contest"}, method = GET)
-    public String add_contest(HttpServletRequest request, Model model, HttpSession sessao) {
-        roles(model, sessao);
-        return "contest/add_contest";
-    }
-
-    @RequestMapping(value = {"/add_contest_form"}, method = RequestMethod.POST)
-    public String add_contes_validar(HttpServletRequest request) {
-        return "contest/edit_contest";
-    }
-
-    private void roles(Model model, HttpSession sessao) {
         Usuario u = (Usuario) sessao.getAttribute("usuario");
         if (u == null) {
             model.addAttribute("online", false);
         } else {
             model.addAttribute("online", true);
             if (u.getRole() == 0) {
+                List<Usuario> users = admin_repo.listarUsuario();
+                model.addAttribute("users", users);
                 model.addAttribute("admin", true);
+                return "admin/users";
             } else {
                 model.addAttribute("admin", false);
-
             }
         }
+
+        return "redirect:index";
+    }
+    @RequestMapping(value = "/problems_admin", method = GET)
+    public String Listarproblemas(Model model, HttpSession sessao) {
+        List<Problema> lista = repositorio.listar_problemas();
+        
+        
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+        if (u == null) {
+            model.addAttribute("online", false);
+        } else {
+            model.addAttribute("online", true);
+            if (u.getRole() == 0) {
+                lista = admin_repo.listarProblema();
+                model.addAttribute("problemas", lista);
+                model.addAttribute("admin", true);
+                return "admin/problems";
+            } else {
+                model.addAttribute("admin", false);
+            }
+        }
+        
+        model.addAttribute("problemas", lista);
+        return "problems";
     }
 }
