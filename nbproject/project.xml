@@ -51,6 +51,7 @@
         <spring-data xmlns="http://www.netbeans.org/ns/spring-data/1">
             <config-files>
                 <config-file>src/java/configs/Initializer.java</config-file>
+                <config-file>web/resources/messages_en.properties.xml</config-file>
             </config-files>
             <config-file-groups>
                 <config-file-group name="Grupo Default"/>

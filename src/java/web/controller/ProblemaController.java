@@ -80,7 +80,7 @@ public class ProblemaController {
     }
 
     @RequestMapping(value = "/send_submission", method = RequestMethod.POST)
-    public String enviarProblema(int id_problema, @RequestParam("codigo") String codigo,
+    public String enviarProblema(long id_problema, @RequestParam("codigo") String codigo,
             @RequestParam("linguagem") String linguagem, HttpSession sessao) {
         Usuario online = (Usuario) sessao.getAttribute("usuario");
         Submissao s = new Submissao(id_problema, online.getId(), codigo, "Evaluating", linguagem, 

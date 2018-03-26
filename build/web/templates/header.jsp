@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -19,6 +21,22 @@
         <link rel="stylesheet" type="text/css" href="../css/style.css">
         <script type="text/javascript" src="../js/jquery.min.js"></script>
         <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+
+        <%-- Script Ajax para pegar hora do servidor --%>
+        <script>
+            function myF() {
+                $.ajax({
+                    url: 'get_time',
+                    success: function (data) {
+                        $("#tempo").html(data);
+                    }
+                });
+            }
+            $(function () {
+                setInterval(myF, 1000);
+            });
+
+        </script>
 
     </head>
     <body>
@@ -44,6 +62,10 @@
                             <li><a href="https://icpcangola.wordpress.com" target="_blank">ACM-ICPC Angola</a></li>
                         </ul>
 
+                        <div class="navbar-form navbar-right">
+                            <span><a href="?lang=en">en</a> | <a href="?lang=pt_BR">pt</a></span>
+                        </div>
+
                         <c:if test="${online eq false}">
                             <form action="<c:url value="/login"/>" method="post" class="navbar-form navbar-right">
                                 <div class="form-group">
@@ -53,7 +75,7 @@
                                 <button type="submit" class="btn btn-primary">Login</button>
                             </form>
                         </c:if>
-                            
+
                         <c:if test="${online eq true}">
                             <div class="dropdown navbar-form navbar-right">
                                 <button class="btn btn-primary dropdown-toggle" type="button" 
@@ -72,11 +94,12 @@
 
             <div class="jumbotron lado bg-dark white">
                 <div class="container">
-                    <div class="col-md-4">
+                    <div class="col-md-8">
                         <h2>Angola Online Judge</h2>
                         <c:if test="${online eq false}">
                             <p>Make your <a href="<c:url value="/registrar"/>">Register</a></p>
                         </c:if>
+                        <p>Server Time: <span id="tempo"></span></p>
                     </div>
 
                 </div>

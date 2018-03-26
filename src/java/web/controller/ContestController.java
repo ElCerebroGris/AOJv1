@@ -111,7 +111,8 @@ public class ContestController {
 
     /**
      * Validar os dados do formulario para criação do concurso
-     **/
+     *
+     */
     @RequestMapping(value = {"/add_contest_form"}, method = RequestMethod.POST)
     public String add_contes_validar(Contest c, BindingResult bindingResult, HttpSession sessao, Model model,
             @RequestParam("hora_inicio") String hora1, @RequestParam("inicio") String data1,
@@ -144,9 +145,11 @@ public class ContestController {
 
     /**
      * Adicionar um problema no concurso
+     *
      * @param cid
      * @param pid
-     **/
+     *
+     */
     @RequestMapping(value = {"/add_problem_contest"}, method = RequestMethod.POST)
     public String add_proble_contest(int cid, Model model, HttpSession sessao,
             @RequestParam("busca") int pid) {
@@ -171,9 +174,11 @@ public class ContestController {
 
     /**
      * Adiconar um usuario no concurso
+     *
      * @param cid
-     * @param  uid
-     **/
+     * @param uid
+     *
+     */
     @RequestMapping(value = {"/add_user_contest"}, method = RequestMethod.POST)
     public String add_user_contest(int cid, Model model, HttpSession sessao,
             @RequestParam("buscaU") int uid) {
@@ -197,33 +202,39 @@ public class ContestController {
 
     /**
      * Ver a lista de problemas de um concurso
-     * @param  cid
-     **/
+     *
+     * @param cid
+     *
+     */
     @RequestMapping(value = {"/cproblems"}, method = GET)
     public String list_contest_problems(int cid, HttpServletRequest request, Model model,
             HttpSession sessao) {
         roles1(model, sessao);
         Contest c = repositorio_contest.get_contest(cid);
         if (c.isRunning() || c.isPast()) {
-            
+
             model.addAttribute("contest", c);
             return "contest/cproblems";
         }
-        return "redirect:preview?cid="+c.getId();
+        return "redirect:preview?cid=" + c.getId();
     }
 
     /**
      * Ver um problema no concurso
-     * @param  cid
+     *
+     * @param cid
      * @param pid
      */
     @RequestMapping(value = {"/cproblem"}, method = GET)
-    public String list_contest(long cid, long pid, Model model, HttpSession sessao) {
+    public String view_problem_contest(long cid, long pid, Model model, HttpSession sessao) {
         ProblemaAd p = repositorio_master.buscarProblemaPorId(pid);
         Contest c = repositorio_contest.get_contest(cid);
-        Usuario u = (Usuario)sessao.getAttribute("usuario");
-        if(repositorio_contest.isContestant(cid, u.getId()))
-            u.setContestant(true);
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+        if (u != null) {
+            if (repositorio_contest.isContestant(cid, u.getId())) {
+                u.setContestant(true);
+            }
+        }
         model.addAttribute("contest", c);
         model.addAttribute("problema", p);
         roles1(model, sessao);
@@ -232,21 +243,24 @@ public class ContestController {
 
     /**
      * Ver o Rank do concurso
+     *
      * @param cid
-     **/
+     *
+     */
     @RequestMapping(value = {"/crank"}, method = GET)
     public String list_contest_rank(int cid, HttpServletRequest request, Model model,
             HttpSession sessao) {
 
         roles1(model, sessao);
         Contest c = repositorio_contest.get_contest(cid);
-        if(c.isComing())
-            return "redirect:preview?cid="+c.getId();
-        
+        if (c.isComing()) {
+            return "redirect:preview?cid=" + c.getId();
+        }
+
         List<Usuario> lista_p = new ArrayList<>();
         //Pegar todos os dados de cada Usuario atravez do seu ID
-        for(Integer u : c.getUsers()){
-            Usuario user = repositorio_usuario.procurarPorId(u); 
+        for (Integer u : c.getUsers()) {
+            Usuario user = repositorio_usuario.procurarPorId(u);
             for (int i = 0; i < c.getProblems().size(); i++) {
                 user.getProblems().add(0);
             }
@@ -254,7 +268,7 @@ public class ContestController {
         }
         lista_p.get(2).getProblems().set(0, 1);
         lista_p.get(1).getProblems().set(0, -1);
-        
+
         //Ordenar a lista do rank segundo os pontos(num de problemas resolvidos)
         Collections.sort(lista_p);
 
@@ -262,7 +276,7 @@ public class ContestController {
         model.addAttribute("users", lista_p);
         return "contest/contest_rank";
     }
-    
+
     @RequestMapping(value = "cuser_profile", method = GET)
     public String userProfile(int uid, HttpServletRequest request, Model model, HttpSession sessao) {
         Usuario u = repositorio_usuario.procurarPorId(uid);
