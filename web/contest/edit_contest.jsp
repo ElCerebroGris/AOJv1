@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Create contest</title>
+        <title>Edit contest</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -64,7 +64,6 @@
                                 <p class="panel-title">Edit contest</p>
                             </div>
                             <div class="panel-body">
-                                <h4>Server time: </h4>
                                 <div> 
                                     <ul class="list-group">
                                         <li class="list-group-item">ID: ${contest.id}</li>
@@ -77,49 +76,96 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <sf:form role="form" action="add_problem_contest?cid=${contest.id}">
 
-                                    <div class="form-group">
-                                        <label>Problems</label>
+                                <div class="col-md-6">
+                                    <sf:form role="form" action="add_problem_contest?cid=${contest.id}">
+
                                         <div class="form-group">
+                                            <label>Problems</label>
                                             <div class="form-group">
-                                                <input name="busca" type="text" id="busca" placeholder="problem id"/>
-                                                <input type="submit" id="addP" class="btn btn-primary" value="Add" />
+                                                <div class="form-group">
+                                                    <input name="busca" type="text" id="busca" placeholder="problem id"/>
+                                                    <input type="submit" id="addP" class="btn btn-primary" value="Add" />
+                                                </div>
+
+                                                <!--List problems in this contest -->
+
+                                                <table id="tabela" class="table table-bordered text-center table-responsive">
+                                                    <thead>
+                                                        <tr class="bg-primary">
+                                                            <th class="text-center">ID</th>
+                                                            <th class="text-center">Name</th>
+                                                            <th class="text-center">Option</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach items="${contest.problems}" var="p">
+                                                            <tr>
+                                                                <td>${p.letra}</td>
+                                                                <td><a href="cproblem?cid=${contest.id}&pid=${p.id}">
+                                                                        ${p.nome}
+                                                                    </a>
+                                                                </td>
+                                                                <td><a href="rem_problem_contest?cid=${contest.id}&pid=${p.id}" 
+                                                                       class="btn btn-danger">Remove</a></td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                                <!-- End list problem in this contest -->
+
+                                            </div>
+                                        </div>
+                                    </sf:form>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <sf:form role="form" action="add_user_contest?cid=${contest.id}">
+                                        <div class="form-group">
+                                            <label for="cend">Users</label>
+                                            <div class="form-group">
+                                                <label for="busca"></label>
+                                                <input type="text" name="buscaU" id="buscaU" placeholder="user id"/>
+                                                <input type="submit" id="addU" class="btn btn-primary" value="Add" />
                                             </div>
 
-                                            <ul name="listaP" class="list-group" id="listaP">
-                                                <c:forEach items="${contest.problems}" var="cp">
-                                                    <li class="list-group-item">${cp}</li>
+                                            <!--List user in this contest -->
+
+                                            <table id="tabela" class="table table-bordered text-center table-responsive">
+                                                <thead>
+                                                    <tr class="bg-primary">
+                                                        <th class="text-center">ID</th>
+                                                        <th class="text-center">Name</th>
+                                                        <th class="text-center">Option</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach items="${contest.users}" var="u">
+                                                        <tr>
+                                                            <td>${u.id}</td>
+                                                            <td><a href="cuser_profile?cid=${contest.id}&uid=${u.id}">
+                                                                    ${u.login}
+                                                                </a>
+                                                            </td>
+                                                            <td><a href="#" class="btn btn-danger">Remove</a></td>
+                                                        </tr>
                                                     </c:forEach>
-                                            </ul>
+                                                </tbody>
+                                            </table>
+                                            <!-- End list users in this contest -->
+
                                         </div>
-                                    </div>
-                                </sf:form>
 
-                                <sf:form role="form" action="add_user_contest?cid=${contest.id}">
-                                    <div class="form-group">
-                                        <label for="cend">Users</label>
-                                        <div class="form-group">
-                                            <label for="busca"></label>
-                                            <input type="text" name="buscaU" id="buscaU" placeholder="user id"/>
-                                            <input type="submit" id="addU" class="btn btn-primary" value="Add" />
-
-                                            <ul name="listaU" class="list-group" id="listaU">
-                                                <c:forEach items="${contest.users}" var="cu">
-                                                    <li class="list-group-item">${cu}</li>
-                                                    </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </sf:form>
-
-
+                                    </sf:form>
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>

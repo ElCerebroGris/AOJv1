@@ -20,7 +20,7 @@
 
 <div class="container">
 
-    <div class="row">
+    <div class="row alert">
 
         <div class="col-md-4">
             <div class="panel panel-default"> 
@@ -33,6 +33,13 @@
                         <li class="group-list-iten"><strong>Test time</strong>: ${problema.tempo} seconds</li>
                         <li class="group-list-iten"><strong>Memory</strong>: 256 MB</li>
                         <li class="group-list-iten"><strong>added by</strong>: ${problema.usuario}</li>
+                            <c:if test="${online eq true}">
+                            <li class="group-list-iten">
+                                <div class="text-center">
+                                    <a href="submit?id=${problema.id}" class="btn btn-primary">Submit</a>  
+                                </div>
+                            </li>
+                        </c:if>
                     </ul>
                 </div> 
             </div>

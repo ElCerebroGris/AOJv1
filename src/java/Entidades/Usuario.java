@@ -12,8 +12,8 @@ import java.util.Vector;
  *
  * @author Zamba
  */
-public class Usuario implements Serializable, Comparable<Usuario>{
-    
+public class Usuario implements Serializable, Comparable<Usuario> {
+
     private long id;
     private int role;
     private String login;
@@ -29,17 +29,18 @@ public class Usuario implements Serializable, Comparable<Usuario>{
     private float pontos;
     private boolean state;
     private String last_submission;
-    private int solved;
+    private int solved;//for contest too
     //Contest
-    private Vector<Integer> problems;
+    private Vector<ProblemaAd> problems;
     private boolean contestant;
+    private long total_time;
 
-    public Usuario(){
+    public Usuario() {
         problems = new Vector<>();
     }
 
-    public Usuario(int role, String login, String password, String first_name, String last_name, String email, 
-            String gender, String brithday, String country, String institution, String gui_language, 
+    public Usuario(int role, String login, String password, String first_name, String last_name, String email,
+            String gender, String brithday, String country, String institution, String gui_language,
             float pontos) {
         this.role = role;
         this.login = login;
@@ -56,8 +57,8 @@ public class Usuario implements Serializable, Comparable<Usuario>{
         problems = new Vector<>();
     }
 
-    public Usuario(long id, int role, String login, String password, String first_name, String last_name, 
-            String email, String gender, String brithday, String country, String institution, 
+    public Usuario(long id, int role, String login, String password, String first_name, String last_name,
+            String email, String gender, String brithday, String country, String institution,
             String gui_language, float pontos) {
         this.id = id;
         this.role = role;
@@ -75,7 +76,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
         problems = new Vector<>();
     }
 
-    public Usuario(long id, int role, String login, String password, String first_name, String last_name, 
+    public Usuario(long id, int role, String login, String password, String first_name, String last_name,
             float pontos, String email, String gender) {
         this.id = id;
         this.role = role;
@@ -89,8 +90,8 @@ public class Usuario implements Serializable, Comparable<Usuario>{
         problems = new Vector<>();
     }
 
-    public Usuario(long id, int role, String login, String password, String first_name, String last_name, 
-            String email, String gender, String country, String institution, 
+    public Usuario(long id, int role, String login, String password, String first_name, String last_name,
+            String email, String gender, String country, String institution,
             float pontos, boolean state, String last_submission, int solved) {
         this.id = id;
         this.role = role;
@@ -120,9 +121,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
         this.solved = solved;
         problems = new Vector<>();
     }
-    
-    
-    
+
     public long getId() {
         return id;
     }
@@ -251,11 +250,11 @@ public class Usuario implements Serializable, Comparable<Usuario>{
         this.solved = solved;
     }
 
-    public Vector<Integer> getProblems() {
+    public Vector<ProblemaAd> getProblems() {
         return problems;
     }
 
-    public void setProblems(Vector<Integer> problems) {
+    public void setProblems(Vector<ProblemaAd> problems) {
         this.problems = problems;
     }
 
@@ -266,24 +265,49 @@ public class Usuario implements Serializable, Comparable<Usuario>{
     public void setContestant(boolean contestant) {
         this.contestant = contestant;
     }
-    
+
+    public long getTotal_time() {
+        return total_time;
+    }
+
+    public void setTotal_time(long total_time) {
+        this.total_time = total_time;
+    }
+
     @Override
     public int compareTo(Usuario o) {
-        int m1=0;
-        int m2=0;
-        for (int i = 0; i < o.getProblems().size(); i++) {
-            if(problems.get(i)>0)
-                ++m1;
-            if(o.getProblems().get(i)>0)
-                ++m2;
+        int m1 = 0;
+        int m2 = 0;
+        int penality1 = 0;
+        int penality2 = 0;
+        //Comparar pelo numero de problemas resolvidos
+        if (Integer.compare(o.getSolved(), solved) != 0) {
+            return Integer.compare(o.getSolved(), solved);
         }
-        if(m1==m2)
+        /*
+        for (int i = 0; i < problems.size() && i < o.getProblems().size(); i++) {
+            
+            if (problems.get(i).getPenalidade()> 0) {
+                penality1 += problems.get(i).getPenalidade();
+                ++m1;
+            }
+            if (o.getProblems().get(i).getPenalidade()> 0) {
+                penality2 += o.getProblems().get(i).getPenalidade();
+                ++m2;
+            }
+        }*/
+        //Se é o numero de problemas resolvidos forem iguais
+        //Comparar tempo de penalização
+        if (m1 == m2) {
+            if (penality1 > penality2) {
+                return -1;
+            }
             return 0;
-        if(m1>m2)
+        }
+        if (m1 > m2) {
             return -1;
+        }
         return 1;
     }
-    
-    
-    
+
 }

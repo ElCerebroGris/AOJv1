@@ -32,6 +32,17 @@ public class ProblemaAd {
     
     private long id;
     private String url_file;
+    
+    private int tempo_limite;
+    private float pontos;
+    private boolean visible;
+    private int ac;
+    private int total;
+    
+    //Para concurso
+    private String letra;
+    private int penalidade;
+    private boolean accepted;
 
     public ProblemaAd() {
     }
@@ -64,6 +75,33 @@ public class ProblemaAd {
         this.exemploSaida = exemploSaida;
         this.usuario = usuario;
         this.id = id;
+    }
+    
+    //Para concurso
+    public ProblemaAd(long id, String nome, String url_file, String letra) {
+        this.id = id;
+        this.nome = nome;
+        this.url_file = url_file;
+        this.letra = letra;
+    }
+
+    //Pra Receber
+    public ProblemaAd(long id, String nome, int tempo_limite, float pontos, boolean visible) {
+        this.id = id;
+        this.nome = nome;
+        this.tempo_limite = tempo_limite;
+        this.pontos = pontos;
+        this.visible = visible;
+    }
+
+    public ProblemaAd(long id, String nome, int tempo_limite, float pontos, boolean visible, int ac, int total) {
+        this.id = id;
+        this.nome = nome;
+        this.tempo_limite = tempo_limite;
+        this.pontos = pontos;
+        this.visible = visible;
+        this.ac = ac;
+        this.total = total;
     }
 
     public String getNome() {
@@ -169,5 +207,71 @@ public class ProblemaAd {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public String getLetra() {
+        return letra;
+    }
+
+    public void setLetra(String letra) {
+        this.letra = letra;
+    }
+
+    public int getPenalidade() {
+        return penalidade;
+    }
+
+    public void setPenalidade(int penalidade) {
+        this.penalidade = penalidade;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
+
+    public int getTempo_limite() {
+        return tempo_limite;
+    }
+
+    public void setTempo_limite(int tempo_limite) {
+        this.tempo_limite = tempo_limite;
+    }
+
+    public float getPontos() {
+        return pontos;
+    }
+
+    public void setPontos(float pontos) {
+        this.pontos = pontos;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public int getAc() {
+        return ac;
+    }
+
+    public void setAc(int ac) {
+        this.ac = ac;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+    
+    
     
 }

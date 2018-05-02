@@ -32,6 +32,7 @@
                     }
                 });
             }
+            
             $(function () {
                 setInterval(myF, 1000);
             });
@@ -82,7 +83,8 @@
                                         data-toggle="dropdown">${usuario.login}<span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="perfil?uid=${usuario.id}">Profile</a></li>
+                                    <li><a href="perfil?uid=${usuario.id}">View profile</a></li>
+                                    <li><a href="edit_user?uid=${usuario.id}">Edit profile</a></li>
                                     <li><a href="<c:url value="/logout"/>">Logout</a></li>
                                 </ul>
                             </div>
@@ -92,19 +94,19 @@
                 </div>
             </nav>
 
-            <div class="jumbotron lado bg-dark white">
-                <div class="container">
-                    <div class="col-md-8">
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="well">
                         <h2>Angola Online Judge</h2>
                         <c:if test="${online eq false}">
                             <p>Make your <a href="<c:url value="/registrar"/>">Register</a></p>
                         </c:if>
-                        <p>Server Time: <span id="tempo"></span></p>
+                            <p>Server Time: <span id="tempo"></span></p>
                     </div>
-
+                    <c:import url="/templates/alertas.jsp"/>
                 </div>
-
             </div>
+
         </div>
     </header>
 

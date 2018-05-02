@@ -1,6 +1,6 @@
 <%-- 
-    Document   : register
-    Created on : 27/09/2017, 19:35:53
+    Document   : edit_user
+    Created on : 2/abr/2018, 23:06:54
     Author     : Zamba
 --%>
 
@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title></title>
+        <title>Edit User</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -30,38 +30,37 @@
     <body>        
         <c:import url="templates/header.jsp"/>
         <div class="container">
-            <form name="myForm" action="<c:url value="registrar"/>" method="post">
+            <form name="myForm" action="<c:url value="edit_user"/>" method="post">
                 <div class="row alert">
-                    <div class="col-md-3">
-
+                    <div class="col-md-4">
+                        <c:import url="templates/menu_esquerdo.jsp"/>
                     </div>
-                    <div class="col-md-6 offset-md-3"> 
-                        <h2 class="text-center">Register User Account</h2>  
+                    <div class="col-md-8"> 
+                        <h2 class="text-center">Edit profile</h2>  
                         <div class="form-group">
                             <label for="txtUsername">Username*</label>
-                            <input name="login" type="text" class="form-control" placeholder="Username" 
-                                   id="txtUsername" required minlength="8" maxlength="128">
+                            <input name="login" type="text" class="form-control" value="${user.login}" 
+                                   id="txtUsername" required minlength="8" maxlength="128" disabled="disabled">
                         </div>
                         <div class="form-group">
                             <label for="txtFirstName">First name*</label>
-                            <input name="first_name" type="text" class="form-control" 
-                                   placeholder="First name" id="txtFirstname" required>
+                            <input name="first_name" type="text" class="form-control" id="txtFirstname" 
+                                   value="${user.first_name}">
                         </div>
                         <div class="form-group">
                             <label for="txtLastName">Last name*</label>
-                            <input name="last_name" type="text" class="form-control" 
-                                   placeholder="Last name" id="txtLastname" required>
+                            <input name="last_name" type="text" class="form-control" id="txtLastname" 
+                                   value="${user.last_name}">
                         </div>
                         <div class="form-group">
                             <label for="cboGender">Gender</label>
-                            <select name="gender" class="form-control">
-                                <option value="M">Male</option>
-                                <option value="F">Female</option>
+                            <select name="gender" class="form-control" disabled="disabled">
+                                <option value="M">${user.gender}</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="date">Date of birth</label>
-                            <input id="date" type="date" name="birthday" class="form-control" placeholder="Date of birth">
+                            <input id="date" type="date" name="birthday" class="form-control" value="${user.birthday}">
                         </div>
                         <div class="form-group">
                             <label for="cboCountry">Country</label>
@@ -79,8 +78,7 @@
                         </div>
                         <div class="form-group">
                             <label for="txtemail">E-mail*</label>
-                            <input type="email" name="email" class="form-control" 
-                                   placeholder="example@name.com" id="txtEmail" required>
+                            <input type="email" name="email" class="form-control" id="txtEmail" value="${user.email}">
                         </div>
                         <div class="form-group">
                             <label for="cboLanguage">Default GUI Language</label>
@@ -118,3 +116,4 @@
     </body>
     <c:import url="templates/footer.jsp"/>
 </html>
+

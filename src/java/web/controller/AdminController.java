@@ -152,11 +152,13 @@ public class AdminController {
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, ex + " Erro ao ler arquivo");
         }
+
         Usuario u = (Usuario) sessao.getAttribute("usuario");
         p.setSaida(b);
         p.setEntrada(a);
         p.setUsuario(u.getLogin());
         admin_repo.createProblem(p);
+        
         return "redirect:problems";
     }
 
@@ -180,11 +182,11 @@ public class AdminController {
 
         return "redirect:index";
     }
+    
     @RequestMapping(value = "/problems_admin", method = GET)
     public String Listarproblemas(Model model, HttpSession sessao) {
         List<Problema> lista = repositorio.listar_problemas();
-        
-        
+                
         Usuario u = (Usuario) sessao.getAttribute("usuario");
         if (u == null) {
             model.addAttribute("online", false);
@@ -202,5 +204,25 @@ public class AdminController {
         
         model.addAttribute("problemas", lista);
         return "problems";
+    }
+    
+    @RequestMapping(value = "/edit_problem", method = GET)
+    public String verProblemaEditar(long pid, Model model, HttpSession sessao) {
+        ProblemaAd p = repositorio.buscarProblemaPorId(pid);
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+        model.addAttribute("problema", p);
+        if (u == null) {
+            model.addAttribute("online", false);
+        } else {
+            model.addAttribute("online", true);
+            if (u.getRole() == 0) {
+                model.addAttribute("problem", p);
+                model.addAttribute("admin", true);
+                return "admin/edit_problem";
+            } else {
+                model.addAttribute("admin", false);
+            }
+        }
+        return "desc_problema";
     }
 }

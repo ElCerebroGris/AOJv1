@@ -20,4 +20,5 @@ public interface UsuarioRepositorio {
     Usuario procurarPorNome(String login, String senha);
     Usuario procurarPorId(long uid);
     boolean procurarExistencia(String login, String email);
+    
 }

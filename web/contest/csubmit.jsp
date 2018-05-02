@@ -19,7 +19,7 @@
 
     </head>
     <body>
-        <c:import url="templates/header.jsp"/>
+        <c:import url="../templates/header.jsp"/>
         <div class="container">
             <div class="row alert">
                 <div class="col-md-12">
@@ -34,7 +34,7 @@
                         <div class="panel-body">
                             <i class="text-center h4">Submit your soluction for the probem</i>
 
-                            <form action="send_submission?id_problema=${problema.id}" method="post" class="form-inline text-center alert" >
+                            <form action="csubmission?cid=${contest.id}&pid=${problema.id}" method="post" class="form-inline text-center alert" >
                                 <div class="form-group">
                                     <label for="cboLanguage">Language</label>
                                     <select name="linguagem" class="form-control">
@@ -58,5 +58,5 @@
             </div>
         </div>
     </body>
-    <c:import url="templates/footer.jsp"/>
+    <c:import url="../templates/footer.jsp"/>
 </html>

@@ -21,7 +21,7 @@
     <body>
         <c:import url="../templates/header.jsp"/>
         <div class="container">
-            <div class="row">
+            <div class="row alert">
                 <div class="col-md-4">
                     <c:import url="../templates/menu_contest.jsp"/>
                 </div>
@@ -29,7 +29,7 @@
                 <div class="col-md-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <p class="panel-title">Rank</p>
+                            <p class="panel-title">${contest.nome} - Rank</p>
                         </div>
                         <div class="panel-body">
                             <table class="table table-bordered table-responsive">
@@ -51,21 +51,21 @@
                                         <tr>
                                             <td><% out.println(i++);%></td>
                                             <td><a href="cuser_profile?uid=${u.id}">${u.login}</a></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>${u.solved}</td>
+                                            <td>${u.total_time}</td>
 
                                             <%-- Para cada Usuario listar os problemas --%>
-                                            <c:forEach items="${u.problems}" var="cp">
+                                            <c:forEach items="${u.problems}" var="up">
                                                 
-                                                <c:if test="${cp > 0}">
-                                                    <td class="success">${cp}</td>
+                                                <c:if test="${up.penalidade > 0}">
+                                                    <td class="success">+${up.penalidade}</td>
                                                 </c:if>
 
-                                                <c:if test="${cp < 0}">
-                                                    <td class="danger">(${cp})</td>
+                                                <c:if test="${up.penalidade < 0}">
+                                                    <td class="danger">(-${up.penalidade})</td>
                                                 </c:if>
 
-                                                <c:if test="${cp == 0}">
+                                                <c:if test="${up.penalidade == 0}">
                                                     <td></td>
                                                 </c:if>
 

@@ -27,6 +27,8 @@ public class Problema {
     
     //Para concurso
     private String letra;
+    private int penalidade;
+    private boolean accepted;
 
     public Problema() {
 
@@ -143,4 +145,20 @@ public class Problema {
         this.letra = letra;
     }
 
+    public int getTempo_resolucao() {
+        return penalidade;
+    }
+
+    public void setTempo_resolucao(int tempo_resolucao) {
+        this.penalidade = tempo_resolucao;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
+    
 }

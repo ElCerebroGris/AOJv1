@@ -22,21 +22,21 @@ public class Contest {
     private String nome;
     private Date inicio;
     private Date fim;
-    private Vector<Integer> users;
-    private Vector<Problema> problems;
+    private Vector<Usuario> users;
+    private Vector<ProblemaAd> problems;
     private String time_long;
     private boolean coming;
     private boolean running;
     private boolean past;
 
     public Contest() {
-        
+
         users = new Vector<>();
         problems = new Vector<>();
 
     }
 
-    public Contest(String nome, Date inicio, Date fim, Vector<Integer> users, Vector<Problema> problems) {
+    public Contest(String nome, Date inicio, Date fim, Vector<Usuario> users, Vector<ProblemaAd> problems) {
         this.nome = nome;
         this.inicio = inicio;
         this.fim = fim;
@@ -44,7 +44,7 @@ public class Contest {
         this.problems = problems;
     }
 
-    public Contest(long id, String nome, Date inicio, Date fim, Vector<Integer> users, Vector<Problema> problems) {
+    public Contest(long id, String nome, Date inicio, Date fim, Vector<Usuario> users, Vector<ProblemaAd> problems) {
         this.id = id;
         this.nome = nome;
         this.inicio = inicio;
@@ -86,7 +86,7 @@ public class Contest {
         this.inicio = inicio;
     }
 
-    public Date getFim(){
+    public Date getFim() {
         return fim;
     }
 
@@ -94,23 +94,23 @@ public class Contest {
         this.fim = fim;
     }
 
-    public Vector<Integer> getUsers() {
+    public Vector<Usuario> getUsers() {
         return users;
     }
 
-    public void setUsers(Vector<Integer> users) {
+    public void setUsers(Vector<Usuario> users) {
         this.users = users;
     }
 
-    public Vector<Problema> getProblems() {
+    public Vector<ProblemaAd> getProblems() {
         return problems;
     }
 
-    public void setProblems(Vector<Problema> problems) {
+    public void setProblems(Vector<ProblemaAd> problems) {
         this.problems = problems;
     }
 
-    public String getTime_long(){
+    public String getTime_long() {
         return Data.toString(inicio);
     }
 
@@ -121,16 +121,18 @@ public class Contest {
 
     public boolean isRunning() {
         Calendar c = Calendar.getInstance();
-        if(c.getTime().after(inicio) && c.getTime().before(fim))
+        if (c.getTime().after(inicio) && c.getTime().before(fim)) {
             return true;
+        }
         return false;
     }
 
     public boolean isPast() {
-        if(getInicio().getTime() - new Date().getTime()<0L)
+        Calendar c = Calendar.getInstance();
+        if (c.getTime().after(fim)) {
             return true;
-        else
-            return false;
+        }
+        return false;
     }
 
 }

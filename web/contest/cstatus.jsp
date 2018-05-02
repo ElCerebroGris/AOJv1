@@ -19,12 +19,12 @@
 
     </head>
     <body>
-        <c:import url="templates/header.jsp"/>
+        <c:import url="../templates/header.jsp"/>
         <div class="container">
             <div class="row alert">
 
             <div class="col-md-4">
-                    <c:import url="templates/menu_esquerdo.jsp"/>
+                    <c:import url="../templates/menu_contest.jsp"/>
                 </div>
                 
             <div class="col-md-8">
@@ -47,8 +47,10 @@
                     <c:forEach items="${submisso}" var="s">
                         <tr>
                             <td>${s.id_submissao}</td>
-                            <td><a href="perfil?uid=${s.id_usuario}">${s.login_user}</a></td>
-                            <td><a href="verProblema?id=${s.id_problema}">${s.id_problema}</a></td>
+                            <td><a href="cuser_profile?uid=${s.id_usuario}">${s.login_user}</a>
+                            </td>
+                            <td><a href="cproblem?cid=${contest.id}&pid=${s.id_problema}">${s.id_problema}</a>
+                            </td>
                             <td>
                                 <c:choose>
                                     <c:when test="${s.status=='Ok'}"><p style="color: green"></c:when>
@@ -70,5 +72,5 @@
         </div>
                 </div>
     </body>
-    <c:import url="templates/footer.jsp"/>
+    <c:import url="../templates/footer.jsp"/>
 </html>

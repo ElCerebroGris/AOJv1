@@ -11,15 +11,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script type="text/javascript" href="js/bootstrap.min.js"></script>
-    <script type="text/javascript" href="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
     <title>AOJ - Contest Problems</title>
 </head>
 <c:import url="../templates/header.jsp"/>
 
 <div class="container">
 
-    <div class="row">
+    <div class="row alert">
 
         <div class="col-md-4">
             <div class="panel panel-default"> 
@@ -32,6 +33,14 @@
                         <li class="group-list-iten"><strong>Test time</strong>: ${problema.tempo} seconds</li>
                         <li class="group-list-iten"><strong>Memory</strong>: 256 MB</li>
                         <li class="group-list-iten"><strong>added by</strong>: ${problema.usuario}</li>
+                            <c:if test="${online && contest.running}">
+                            <li>
+                                <div class="text-center">
+                                    <a href="csubmit?cid=${contest.id}&pid=${problema.id}" class="btn btn-primary">
+                                        Submit</a>  
+                                </div>
+                            </li>
+                        </c:if>
                     </ul>
                 </div> 
             </div>
@@ -83,10 +92,10 @@
 
             <div class="row">
 
-                <c:if test="${online && contest.running && usuario.contestant}">
+                <c:if test="${online and contest.running and user.contestant}">
                     <div class="row">
                         <div class="text-center">
-                            <a href="submit?id=${problema.id}" class="btn btn-primary btn-lg">Submit</a>
+                            <a href="csubmit?cid=${contest.id}&pid=${problema.id}" class="btn btn-primary btn-lg">Submit</a>
                         </div>
 
                     </div>    
@@ -97,8 +106,6 @@
         </div>
 
     </div>
-
-</div>
 
 </div>
 

@@ -24,7 +24,7 @@
         <c:import url="templates/header.jsp"/>
 
         <div class="container">
-            <div class="row">
+            <div class="row alert">
 
                 <div class="col-md-4">
                     <c:import url="templates/menu_esquerdo.jsp"/>
@@ -36,7 +36,7 @@
                         <div class="panel panel-primary">
                             <div class="panel-heading" role="tab" id="headingOne">
                                 <h4 class="panel-title">
-                                        General Information - ${user.login}
+                                    General Information - ${user.login}
                                 </h4>
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
@@ -79,22 +79,22 @@
                         <div class="panel panel-primary">
                             <div class="panel-heading" role="tab" id="headingTwo">
                                 <h4 class="panel-title">
-                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        Exercises Solved
-                                    </a>
+                                    Exercises Solved
                                 </h4>
                             </div>
-                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                <div class="panel-body">
-
-                                </div>
+                            <div class="panel-body">
+                                <c:forEach items="${user.problems}" var="p">
+                                    <a class="btn btn-info" href="verProblema?id=${p.id}">${p.id}</a> 
+                                </c:forEach>
                             </div>
+
                         </div>
 
                     </div>
                 </div>
             </div>
-            <c:import url="templates/footer.jsp"/>
+        </div>
+        <c:import url="templates/footer.jsp"/>
     </body>
 
 </html>

@@ -27,13 +27,14 @@
 
     <div class="panel panel-default"> 
         <div class="panel-heading"> 
-            <h3 class="panel-title">24</h3> 
+            <h3 class="panel-title">24h</h3> 
         </div> 
         <div class="panel-body"> 
             <ul style="list-style-type: none">
                 <li><a href="<c:url value="/problems" />">Problems</a></li>
                 <li><a href="<c:url value="/ranking" />">Rank</a></li>
                 <li><a href="<c:url value="/list_contest" />">Contests</a></li>
+                <li><a href="<c:url value="/teams" />">Teams</a></li>
             </ul>
         </div>
 

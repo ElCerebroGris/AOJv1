@@ -31,7 +31,7 @@
         <c:import url="../templates/header.jsp"/>
 
         <div class="container">
-            <div class="row">
+            <div class="row alert">
                 <div class="col-md-4">
                     <c:import url="../templates/menu_contest.jsp"/>
                 </div>
@@ -39,7 +39,7 @@
 
                     <div class="panel panel-default"> 
                         <div class="panel-heading"> 
-                            <h3 class="panel-title">Overview Contest</h3> 
+                            <h3 class="panel-title">${contest.nome} - Overview</h3> 
                         </div> 
                         <div class="panel-body"> 
                             <ul class="list-group">

@@ -50,6 +50,25 @@ public class UsuarioController {
     public String mostrarForm() {
         return "register";
     }
+    
+    @RequestMapping(value = "edit_user", method = RequestMethod.GET)
+    public String mostrarFormEdit(long uid, HttpServletRequest request, Model model, HttpSession sessao) {
+        Usuario u1 = repositorio.procurarPorId(uid);
+        model.addAttribute("user", u1);
+        
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+        if (u == null) {
+            model.addAttribute("online", false);
+        } else {
+            model.addAttribute("online", true);
+            if (u.getRole() == 0) {
+                model.addAttribute("admin", true);
+            } else {
+                model.addAttribute("admin", false);
+            }
+        }
+        return "edit_user";
+    }
 
     @RequestMapping(value = "perfil", method = GET)
     public String userProfile(int uid, HttpServletRequest request, Model model, HttpSession sessao) {

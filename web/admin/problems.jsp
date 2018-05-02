@@ -24,7 +24,6 @@
         <c:import url="../templates/header.jsp"/>
         <div class="container">
 
-
             <div class="row alert">
 
                 <div class="col-md-4">                    
@@ -65,6 +64,7 @@
                                                 <c:if test="${p.visible eq false}">
                                                     <a href="active?pid=${p.id}" class="btn btn-primary">Active</a>
                                                 </c:if>
+                                                <a href="edit_problem?pid=${p.id}" class="btn btn-info">Edit</a>
                                             </td>
                                         </tr>
                                     </c:forEach>

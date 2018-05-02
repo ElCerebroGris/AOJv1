@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title></title>
+        <title>AOJ</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -25,7 +25,7 @@
         <div class="container-fluid">
             <div class="container">
 
-                <div class="row">
+                <div class="row alert">
 
                     <div class="col-sm-4">
                         <c:import url="templates/menu_esquerdo.jsp"/>

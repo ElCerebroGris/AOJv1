@@ -6,6 +6,8 @@
 package Modelo;
 
 import BD.ConectaNormal;
+import Entidades.Problema;
+import Entidades.ProblemaAd;
 import Entidades.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Component;
@@ -158,12 +161,36 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
                 u = new Usuario(rs.getLong("id_usuario"), rs.getString("login"), rs.getString("gender")
                         , rs.getString("country"), rs.getString("institution"),rs.getFloat("pontos"), 
                         rs.getString("last_submission"), rs.getInt("solved"));
+                u.setProblems(problemasResolvidos(uid));
             }
             return u;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD 1");
         }
         return u;
-    }    
+    }
+
+    private Vector<ProblemaAd> problemasResolvidos(long uid){
+        Vector<ProblemaAd> lista = new Vector<>();
+
+        try {
+            Connection connect = ConectaNormal.getConnection();
+            String sql = "SELECT DISTINCT id_problema FROM submissao WHERE id_usuario=" + uid + " and status='Ok';";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ProblemaAd p = new ProblemaAd();
+                p.setId(rs.getLong(1));
+                lista.add(p);
+            }
+            connect.close();
+            return lista;
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
+        }
+        return lista;
+    }
 
 }

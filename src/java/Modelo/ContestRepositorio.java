@@ -7,7 +7,9 @@ package Modelo;
 
 import Entidades.Contest;
 import Entidades.Problema;
+import Entidades.ProblemaAd;
 import Entidades.Submissao;
+import Entidades.Usuario;
 import java.util.List;
 import java.util.Vector;
 
@@ -23,9 +25,13 @@ public interface ContestRepositorio {
     List<Contest> listar_contest();
     void delete_contest(int id);
     void add_problem_to_contest(long cid, long pid);
+    void remove_problem_from_contest(long cid, long pid);
     void add_user_to_contest(long cid, long uid);
-    Vector<Problema> list_problems_contest(long cid);
-    Vector<Integer> list_user_contest(long cid);
+    void remove_user_from_contest(long cid, long uid);
+    Vector<ProblemaAd> list_problems_contest(long cid);
+    Vector<Usuario> list_user_contest(long cid);
     void submeter(Submissao s);
+    Vector<Submissao> list_submission(long cid);
     boolean isContestant(long cid, long uid);
+    Vector<ProblemaAd> list_user_problem_contest(Contest c, long uid);
 }

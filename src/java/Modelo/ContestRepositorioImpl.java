@@ -8,6 +8,7 @@ package Modelo;
 import BD.ConectaNormal;
 import Entidades.Contest;
 import Entidades.Problema;
+import Entidades.ProblemaAd;
 import Entidades.Submissao;
 import Entidades.Usuario;
 import Tools.Data;
@@ -25,6 +26,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,7 +36,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ContestRepositorioImpl implements ContestRepositorio {
 
-    public ContestRepositorioImpl() {
+    private UsuarioRepositorio repositorio_usuario;
+    private RepositorioMaster repositorio_master;
+
+    @Autowired
+    public ContestRepositorioImpl(UsuarioRepositorio ru, RepositorioMaster rm) {
+        this.repositorio_usuario = ru;
+        this.repositorio_master = rm;
     }
 
     @Override
@@ -142,9 +150,18 @@ public class ContestRepositorioImpl implements ContestRepositorio {
 
     @Override
     public void add_problem_to_contest(long cid, long pid) {
+
         try {
             Connection connect = ConectaNormal.getConnection();
-            String sql = "insert into contest_problem " + "values (" + cid + "," + pid + ");";
+            int id = quantGeral("contest_problem");
+            int tam = list_problems_contest(cid).size();
+            char c = 'A';
+            for (char i = 0; i < tam; i++) {
+                ++c;
+            }
+
+            String sql = "insert into contest_problem " + "values (" + id + "," + cid + "," + pid + ", "
+                    + "'" + c + "');";
 
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.executeUpdate();
@@ -155,8 +172,22 @@ public class ContestRepositorioImpl implements ContestRepositorio {
     }
 
     @Override
-    public Vector<Problema> list_problems_contest(long cid) {
-        Vector<Problema> lista = new Vector<>();
+    public void remove_problem_from_contest(long cid, long pid) {
+        try {
+            Connection connect = ConectaNormal.getConnection();
+
+            String sql = "delete from contest_problem where id_contest=" + cid + " and id_problem=" + pid + ";";
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeUpdate();
+            connect.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD");
+        }
+    }
+
+    @Override
+    public Vector<ProblemaAd> list_problems_contest(long cid) {
+        Vector<ProblemaAd> lista = new Vector<>();
 
         try {
             Connection connect = ConectaNormal.getConnection();
@@ -168,7 +199,7 @@ public class ContestRepositorioImpl implements ContestRepositorio {
             ps.executeQuery();
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                lista.add(new Problema(rs.getInt("id_problem"), rs.getString("nome_problema"), " ",
+                lista.add(new ProblemaAd(rs.getInt("id_problem"), rs.getString("nome_problema"), " ",
                         rs.getString("letra")));
             }
             connect.close();
@@ -195,8 +226,13 @@ public class ContestRepositorioImpl implements ContestRepositorio {
     }
 
     @Override
-    public Vector<Integer> list_user_contest(long cid) {
-        Vector<Integer> lista = new Vector<>();
+    public void remove_user_from_contest(long cid, long uid) {
+
+    }
+
+    @Override
+    public Vector<Usuario> list_user_contest(long cid) {
+        Vector<Usuario> lista = new Vector<>();
 
         try {
             Connection connect = ConectaNormal.getConnection();
@@ -206,11 +242,145 @@ public class ContestRepositorioImpl implements ContestRepositorio {
             ps.executeQuery();
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                lista.add(rs.getInt("id_user"));
+                long id = rs.getInt("id_user");
+                Usuario u = repositorio_usuario.procurarPorId(id);
+                u.setSolved(rs.getInt("user_ac"));
+                lista.add(u);
             }
             connect.close();
             return lista;
         } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
+        }
+        return lista;
+    }
+
+    @Override
+    public void submeter(Submissao s) {
+        try {
+            int c = quantSubmissoes() + 1;
+            s.setUrl(Ficheiro.gerarFicheiroContest(s, c, s.getLinguagem()));
+            Connection connect = ConectaNormal.getConnection();
+            Calendar date = Calendar.getInstance();
+            Data d = new Data(date);
+            String sql = "insert into contest_submission(id_sublmissao , id_contest, id_usuario, id_problema, url, linguagem, status, "
+                    + "data_submissao, usuario) "
+                    + "values (" + c + "," + s.getId_contest() + "," + s.getId_usuario() + "," + s.getId_problema()
+                    + ",'" + s.getUrl() + "','" + s.getLinguagem() + "','Evaluating','" + d.toString() + "',"
+                    + "'" + s.getLogin_user() + "');";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeUpdate();
+            connect.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD id=" + s.getId_problema());
+        }
+    }
+
+    private static int quantSubmissoes() {
+        int r = -1;
+        try {
+            Connection connect = ConectaNormal.getConnection();
+            String sql = "SELECT count(*) FROM contest_submission;";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            r = rs.getInt(1);
+            connect.close();
+            return r;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
+        }
+        return r;
+    }
+
+    @Override
+    public boolean isContestant(long cid, long uid) {
+        Connection connect = null;
+        try {
+            connect = ConectaNormal.getConnection();
+            String sql = "SELECT * FROM contest_user WHERE id_contest=" + cid + " and id_user=" + uid + ";";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
+        } finally {
+            try {
+                connect.close();
+            } catch (SQLException ex) {
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Vector<ProblemaAd> list_user_problem_contest(Contest c, long uid) {
+        Vector<ProblemaAd> lista = new Vector<>();
+
+        try {
+            Connection connect = ConectaNormal.getConnection();
+            String sql = "SELECT * FROM contest_user_problem WHERE id_contest=" + c.getId() + " and "
+                    + "id_user=" + uid + ";";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                long pid = rs.getLong("id_problem");
+                ProblemaAd p = repositorio_master.buscarProblemaPorId(pid);
+                p.setPenalidade(rs.getInt("penality"));
+                lista.add(p);
+            }
+            
+            //Adicionar problemas q o usuario ainda não submeteu
+            for (int i = 0; i < c.getProblems().size(); i++) {
+                boolean yes = false;
+
+                for (int j = 0; j < lista.size(); j++) {
+                    if (c.getProblems().get(i).getId() == lista.get(j).getId()
+                            && lista.get(j).getPenalidade() != 0) {
+                        yes = true;
+                        break;
+                    }
+                }
+
+                if (!yes) {
+                    ProblemaAd p = c.getProblems().get(i);
+                    lista.add(p);
+                }
+            }
+            connect.close();
+            return lista;
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
+        }
+        return lista;
+    }
+
+    @Override
+    public Vector<Submissao> list_submission(long cid) {
+        Vector<Submissao> lista = new Vector<>();
+        try {
+            Connection connect = ConectaNormal.getConnection();
+            String sql = "SELECT * FROM contest_submission WHERE id_contest=" + cid
+                    + " ORDER BY id_sublmissao desc;";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(new Submissao(rs.getLong("id_sublmissao"), rs.getLong("id_problema"),
+                        rs.getLong("id_usuario"), rs.getString("status"), rs.getString("linguagem"),
+                        rs.getString("data_submissao"), rs.getString("usuario")));
+            }
+            connect.close();
+            return lista;
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
         }
         return lista;
@@ -251,52 +421,6 @@ public class ContestRepositorioImpl implements ContestRepositorio {
             JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
         }
         return r;
-    }
-
-    @Override
-    public void submeter(Submissao s) {
-        try {
-            int c = quantSubmissoes() + 1;
-            s.setUrl(Ficheiro.gerarFicheiroContest(s, c, s.getLinguagem()));
-            Connection connect = ConectaNormal.getConnection();
-            Calendar date = Calendar.getInstance();
-            Data d = new Data(date);
-            String sql = "insert into contest_submission(id_sublmissao , id_contest, id_usuario, id_problema, url, linguagem, status, "
-                    + "data_submissao, usuario) "
-                    + "values (" + c + "," +s.getId_contest()+","+ s.getId_usuario() + "," + s.getId_problema()
-                    + ",'" + s.getUrl() + "','" + s.getLinguagem() + "','Evaluating','" + d.toString() + "',"
-                    + "'" + s.getLogin_user() + "');";
-
-            PreparedStatement ps = connect.prepareStatement(sql);
-            ps.executeUpdate();
-            connect.close();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD");
-        }
-    }
-    
-    private static int quantSubmissoes() {
-        int r = -1;
-        try {
-            Connection connect = ConectaNormal.getConnection();
-            String sql = "SELECT count(*) FROM submissao;";
-
-            PreparedStatement ps = connect.prepareStatement(sql);
-            ps.executeQuery();
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            r = rs.getInt(1);
-            connect.close();
-            return r;
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
-        }
-        return r;
-    }
-
-    @Override
-    public boolean isContestant(long cid, long uid) {
-        return false;
     }
 
 }

@@ -13,6 +13,7 @@ import Tools.Ficheiro;
 import Tools.Iniciar;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -112,7 +113,7 @@ public class AdminRepositorioImpl implements AdminRepositorio {
             JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD");
         }
     }
-    
+
     @Override
     public void makeAdmin(long uid) {
         try {
@@ -158,10 +159,14 @@ public class AdminRepositorioImpl implements AdminRepositorio {
             p.setExemploSaida(res[2]);
             p.setExpecificacaoEntrada(res[3]);
             p.setExpecificacaoSaida(res[4]);
+            
+            //File f = new File(Iniciar.getUrl() + "Problemas/P_" + p.getId());
+            //Files.createDirectory(f.toPath());
+            
             File fin;
 
             for (int i = 0; i < p.getEntrada().size(); i++) {
-                fin = new File(Iniciar.getUrl()+"Problemas/P_" + p.getId() + "/input"+i+".txt");
+                fin = new File(Iniciar.getUrl() + "Problemas/P_" + p.getId() + "/input" + i + ".txt");
                 fin.createNewFile();
                 try (FileOutputStream in = new FileOutputStream(fin)) {
                     in.write(p.getEntrada().get(i));
@@ -171,7 +176,7 @@ public class AdminRepositorioImpl implements AdminRepositorio {
 
             File fout;
             for (int i = 0; i < p.getSaida().size(); i++) {
-                fout = new File(Iniciar.getUrl()+"Problemas/P_" + p.getId() + "/output"+i+".txt");
+                fout = new File(Iniciar.getUrl() + "Problemas/P_" + p.getId() + "/output" + i + ".txt");
                 fout.createNewFile();
                 try (FileOutputStream in = new FileOutputStream(fout)) {
                     in.write(p.getSaida().get(i));
@@ -243,6 +248,5 @@ public class AdminRepositorioImpl implements AdminRepositorio {
         }
         return lista;
     }
-
 
 }

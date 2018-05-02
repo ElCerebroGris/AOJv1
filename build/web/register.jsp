@@ -31,7 +31,7 @@
         <c:import url="templates/header.jsp"/>
         <div class="container">
             <form name="myForm" action="<c:url value="registrar"/>" method="post">
-                <div class="row">
+                <div class="row alert">
                     <div class="col-md-3">
 
                     </div>
@@ -97,7 +97,7 @@
                         </div>
                         <div class="form-group">
                             <label for="txtConfirmPassword">Confirm Password*</label>
-                            <input name="password2" type="password2" class="form-control" 
+                            <input name="password2" type="password" class="form-control" 
                                    placeholder="***" id="txtConfirmPassword" minlength="8">
                         </div>
                         <div class="form-check">

@@ -40,12 +40,14 @@ public class Submissao {
     }
     
     //Pra enviar Contest
-    public Submissao(long id_problema, long id_usuario, long id_contest,String codigo, String linguagem) {
+    public Submissao(long id_problema, long id_usuario, long id_contest, String codigo, String linguagem, 
+            String usuario) {
         this.id_problema = id_problema;
         this.id_usuario = id_usuario;
         this.codigo = codigo;
         this.linguagem = linguagem;
         this.id_contest = id_contest;
+        this.login_user = usuario;
     }
 
     //Pra receber

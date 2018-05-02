@@ -30,7 +30,7 @@
                         
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <p class="panel-title">Problems</p>
+                            <p class="panel-title">${contest.nome} - Problems</p>
                         </div>
                         <div class="panel-body">
                             <table id="tabela" class="table table-bordered text-center table-responsive">

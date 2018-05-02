@@ -32,8 +32,13 @@
         <div class="panel-body"> 
             <ul style="list-style-type: none">
                 <li><a href="<c:url value="/preview?cid=${contest.id}" />">Overview</a></li>
+                    <c:if test="${(contest.running eq true or contest.past eq true) 
+                                  and online and usuario.contestant}">
+                    <li><a href="<c:url value="/cproblems?cid=${contest.id}" />">Problems</a></li>                    
+                    <li><a href="<c:url value="/cstatus?cid=${contest.id}" />">Status</a></li>
+                    </c:if>
+                    
                     <c:if test="${contest.running eq true or contest.past eq true}">
-                    <li><a href="<c:url value="/cproblems?cid=${contest.id}" />">Problems</a></li>
                     <li><a href="<c:url value="/crank?cid=${contest.id}" />">Rank</a></li>
                     </c:if>
             </ul>

@@ -92,6 +92,7 @@ public class Ficheiro {
     
     public static void Escrever(String texto, String caminho) {
         Path p = Paths.get(caminho);
+        System.out.println(texto);
         Charset utf = StandardCharsets.UTF_8;
         try (BufferedWriter br = Files.newBufferedWriter(p, utf)) {
             String [] cad = texto.split("<br />");

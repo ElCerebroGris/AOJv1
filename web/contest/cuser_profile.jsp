@@ -24,7 +24,7 @@
         <c:import url="../templates/header.jsp"/>
 
         <div class="container">
-            <div class="row">
+            <div class="row alert">
 
                 <div class="col-md-4">
                     <c:import url="../templates/menu_esquerdo.jsp"/>
@@ -94,6 +94,7 @@
                     </div>
                 </div>
             </div>
+        </div>
             <c:import url="../templates/footer.jsp"/>
     </body>
 
