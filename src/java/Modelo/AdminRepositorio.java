@@ -7,6 +7,7 @@ package Modelo;
 
 import Entidades.Problema;
 import Entidades.ProblemaAd;
+import Entidades.Team;
 import Entidades.Usuario;
 import java.util.List;
 
@@ -25,5 +26,7 @@ public interface AdminRepositorio {
     List<Problema> listarProblema();
     List<Usuario> listarUsuario();
     ProblemaAd createProblem(ProblemaAd p);
+    List<Team> listarEquipas();
+    void addEquipa(Team t);
     
 }

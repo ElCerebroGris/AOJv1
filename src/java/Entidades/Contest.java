@@ -28,6 +28,8 @@ public class Contest {
     private boolean coming;
     private boolean running;
     private boolean past;
+    
+    private boolean visible;
 
     public Contest() {
 
@@ -53,11 +55,12 @@ public class Contest {
         this.problems = problems;
     }
 
-    public Contest(long id, String nome, Date inicio, Date fim) {
+    public Contest(long id, String nome, Date inicio, Date fim, boolean visible) {
         this.nome = nome;
         this.inicio = inicio;
         this.fim = fim;
         this.id = id;
+        this.visible = visible;
         users = new Vector<>();
         problems = new Vector();
     }
@@ -135,4 +138,12 @@ public class Contest {
         return false;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+    
 }

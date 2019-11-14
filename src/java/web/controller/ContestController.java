@@ -6,6 +6,7 @@
 package web.controller;
 
 import Entidades.Contest;
+import Entidades.PLanguage;
 import Entidades.Problema;
 import Entidades.ProblemaAd;
 import Entidades.Submissao;
@@ -64,11 +65,45 @@ public class ContestController {
         return "contest/preview_contest";
     }
 
-    @RequestMapping(value = {"/list_contest"}, method = GET)
-    public String list_contest(Model model, HttpSession sessao) {
-        List<Contest> lista = repositorio_contest.listar_contest();
-        model.addAttribute("contests", lista);
+    @RequestMapping(value = {"/next_contest"}, method = GET)
+    public String list_next_contest(Model model, HttpSession sessao) {
         roles2(model, sessao);
+        List<Contest> lista = repositorio_contest.listar_contest();
+        List<Contest> l = new ArrayList<>();
+        for (Contest lista1 : lista) {
+            if(lista1.isComing()){
+                l.add(lista1);
+            }
+        }
+        model.addAttribute("contests", l);
+        return "contest/list_contests";
+    }
+    
+    @RequestMapping(value = {"/running_contest"}, method = GET)
+    public String list_running_contest(Model model, HttpSession sessao) {
+        roles2(model, sessao);
+        List<Contest> lista = repositorio_contest.listar_contest();
+        List<Contest> l = new ArrayList<>();
+        for (Contest lista1 : lista) {
+            if(lista1.isRunning()){
+                l.add(lista1);
+            }
+        }
+        model.addAttribute("contests", l);
+        return "contest/list_contests";
+    }
+    
+    @RequestMapping(value = {"/past_contest"}, method = GET)
+    public String list_past_contest(Model model, HttpSession sessao) {
+        roles2(model, sessao);
+        List<Contest> lista = repositorio_contest.listar_contest();
+        List<Contest> l = new ArrayList<>();
+        for (Contest lista1 : lista) {
+            if(lista1.isPast()){
+                l.add(lista1);
+            }
+        }
+        model.addAttribute("contests", l);
         return "contest/list_contests";
     }
 
@@ -114,6 +149,15 @@ public class ContestController {
     /**
      * Validar os dados do formulario para criação do concurso
      *
+     * @param c
+     * @param bindingResult
+     * @param sessao
+     * @param model
+     * @param hora1
+     * @param data1
+     * @param hora2
+     * @param data2
+     * @return 
      */
     @RequestMapping(value = {"/add_contest_form"}, method = RequestMethod.POST)
     public String add_contes_validar(Contest c, BindingResult bindingResult, HttpSession sessao, Model model,
@@ -222,6 +266,75 @@ public class ContestController {
                 model.addAttribute("admin", true);
                 repositorio_contest.add_user_to_contest(cid, uid);
                 return "redirect:edit_contest?cid=" + cid;
+            } else {
+                model.addAttribute("admin", false);
+                return "redirect:index";
+            }
+        }
+
+    }
+    @RequestMapping(value = {"/rem_user_contest"}, method = RequestMethod.GET)
+    public String rem_user_contest(long cid, long uid, Model model, HttpSession sessao) {
+        roles1(cid, model, sessao);
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+        if (u == null) {
+            return "redirect:index";
+        } else {
+            model.addAttribute("online", true);
+            if (u.getRole() == 0) {
+                //Valido
+                model.addAttribute("admin", true);
+                repositorio_contest.remove_user_from_contest(cid, uid);
+                return "redirect:edit_contest?cid=" + cid;
+            } else {
+                model.addAttribute("admin", false);
+                return "redirect:index";
+            }
+        }
+
+    }
+    
+    @RequestMapping(value = {"/desactive_contest"}, method = RequestMethod.GET)
+    public String set_inactive_contest(long cid, Model model, HttpSession sessao) {
+        roles1(cid, model, sessao);
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+        if (u == null) {
+            return "redirect:index";
+        } else {
+            model.addAttribute("online", true);
+            if (u.getRole() == 0) {
+                //Valido
+                model.addAttribute("admin", true);
+                repositorio_contest.desactive_contest(cid);
+                return "redirect:list_contest";
+            } else {
+                model.addAttribute("admin", false);
+                return "redirect:index";
+            }
+        }
+
+    }
+    
+    /**
+     * Activar a visibildade a um contest
+     * @param cid
+     * @param model
+     * @param sessao
+     * @return 
+     */
+    @RequestMapping(value = {"/active_contest"}, method = RequestMethod.GET)
+    public String set_ctive_contest(long cid, Model model, HttpSession sessao) {
+        roles1(cid, model, sessao);
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+        if (u == null) {
+            return "redirect:index";
+        } else {
+            model.addAttribute("online", true);
+            if (u.getRole() == 0) {
+                //Valido
+                model.addAttribute("admin", true);
+                repositorio_contest.active_contest(cid);
+                return "redirect:list_contest";
             } else {
                 model.addAttribute("admin", false);
                 return "redirect:index";
@@ -356,6 +469,47 @@ public class ContestController {
         model.addAttribute("submisso", lista);
         roles1(cid, model, sessao);
         return "contest/cstatus";
+    }
+    
+    @RequestMapping(value = {"/global_contest_statistics"}, method = GET)
+    public String view_estatisticas(HttpServletRequest request, Model model, HttpSession sessao) {
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+
+        if (u == null) {
+            model.addAttribute("online", false);
+        } else {
+            model.addAttribute("online", true);
+
+            if (u.getRole() == 0) {
+                model.addAttribute("admin", true);
+            } else {
+                model.addAttribute("admin", false);
+            }
+        }
+        List<PLanguage> lista = repositorio_contest.statistics();
+        model.addAttribute("languages", lista);
+        return "contest/statistics";
+    }
+    
+    @RequestMapping(value = {"/contest_statistics"}, method = GET)
+    public String view_estatisticas_cid(long cid, HttpServletRequest request, Model model, HttpSession sessao) {
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+
+        if (u == null) {
+            model.addAttribute("online", false);
+        } else {
+            model.addAttribute("online", true);
+            if (u.getRole() == 0) {
+                model.addAttribute("admin", true);
+            } else {
+                model.addAttribute("admin", false);
+            }
+        }
+        Contest c = repositorio_contest.get_contest(cid);
+        model.addAttribute("contest", c);
+        List<PLanguage> lista = repositorio_contest.statistics(cid);
+        model.addAttribute("languages", lista);
+        return "contest/statistics_contest";
     }
 
     //Controla nivel de usuario e verifica se Ele é concorrente

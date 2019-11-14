@@ -19,9 +19,11 @@
 
     </head>
     <body>
-        <c:import url="templates/header.jsp"/>
+
         <div class="container">
             <div class="row alert">
+                <c:import url="templates/header.jsp"/>
+
                 <div class="col-md-4">
                     <c:import url="templates/menu_esquerdo.jsp"/>
                 </div>
@@ -32,34 +34,56 @@
                             <p class="panel-title">Rank</p>
                         </div>
                         <div class="panel-body">
-                            <table class="table table-bordered table-responsive">
-                                <tr class="bg-primary">
-                                    <th>Rank</th>
-                                    <th>Country</th>
-                                    <th>User</th>
-                                    <th>Rating</th>
-                                    <th>Solved</th>
-                                    <th>Last Submitions</th>
-                                </tr>
-                                <% int i = 1; %>
-                                <c:forEach items="${users}" var="u">
-                                    <tr>
-                                            <td><% out.println(i);
-                                    ++i;%></td>
-                                        <td>Angola</td>
-                                        <td><a href="perfil?uid=${u.id}">${u.login}</a></td>
-                                        <td>${u.pontos}</td>
-                                        <td>${u.solved}</td>
-                                        <td>${u.last_submission}</td>
+                            <table id="tabela" class="table table-bordered table-responsive">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th>Rank</th>
+                                        <th>Country</th>
+                                        <th>User</th>
+                                        <th>Rating</th>
+                                        <th>Solved</th>
+                                        <th>Last Submitions</th>
                                     </tr>
-                                </c:forEach>
+                                </thead>
+                                <tbody>
+                                    <% int i = 1; %>
+                                    <c:forEach items="${users}" var="u">
+                                        <tr>
+                                            <td><% out.println(i);
+                                                ++i;%></td>
+                                            <td>Angola</td>
+                                            <td><a href="perfil?uid=${u.id}">${u.login}</a></td>
+                                            <td>${u.pontos}</td>
+                                            <td>${u.solved}</td>
+                                            <td>${u.last_submission}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
                             </table>
                         </div>
                     </div>
 
                 </div>
-            </div>   
+            </div>
+            <c:import url="templates/footer.jsp"/>
         </div>
+        <script src="js/jquery.min.js"></script>
+        <link rel="stylesheet" href="css/datatables.min.css" />
+        <script src="js/datatables.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('#tabela').DataTable({
+                    "language": {
+                        "lengthMenu": "Display _MENU_ records per page",
+                        "zeroRecords": "Nothing found - sorry",
+                        "info": "Showing page _PAGE_ of _PAGES_",
+                        "infoEmpty": "No records available",
+                        "infoFiltered": "(filtered from _MAX_ total records)"
+                    }
+                });
+            });
+        </script>
     </body>
-    <c:import url="templates/footer.jsp"/>
+
 </html>

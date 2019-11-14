@@ -17,6 +17,7 @@ public interface UsuarioRepositorio {
     List<Usuario> listar();
     Usuario procurar(long id);
     Usuario salvar(Usuario u);
+    Usuario editar(Usuario u);
     Usuario procurarPorNome(String login, String senha);
     Usuario procurarPorId(long uid);
     boolean procurarExistencia(String login, String email);

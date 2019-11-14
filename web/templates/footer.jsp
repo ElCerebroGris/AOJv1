@@ -12,7 +12,7 @@
 <footer class="footer bg-dark">
     <div class="container">
         <p class="text-muted white text-center">
-            AOJ Version Beta 1.0, all rights reserved to ISUTIC - Copyright 2018
+            AOJ Version Beta 1.0, all rights reserved to ISUTIC - Copyright 2019
         </p>
     </div>
 </div>

@@ -11,6 +11,7 @@ import Entidades.ProblemaAd;
 import Entidades.Usuario;
 import Modelo.AdminRepositorio;
 import Modelo.RepositorioMaster;
+import Tools.Validador;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,28 +44,26 @@ public class ProblemaController {
     @RequestMapping(value = "/problems", method = GET)
     public String Listarproblemas(Model model, HttpSession sessao) {
         List<Problema> lista = repositorio.listar_problemas();
-        
-        
+
         Usuario u = (Usuario) sessao.getAttribute("usuario");
         if (u == null) {
             model.addAttribute("online", false);
         } else {
             model.addAttribute("online", true);
             if (u.getRole() == 0) {
-                lista = admin_repositorio.listarProblema();
                 model.addAttribute("problemas", lista);
                 model.addAttribute("admin", true);
             } else {
                 model.addAttribute("admin", false);
             }
         }
-        
+
         model.addAttribute("problemas", lista);
         return "problems";
     }
 
     @RequestMapping(value = "/submit", method = GET)
-    public String Submeterproblemas(int id, Model model, HttpSession sessao) {
+    public String Submeterproblemas(long id, Model model, HttpSession sessao) {
         ProblemaAd p = repositorio.buscarProblemaPorId(id);
         model.addAttribute("problema", p);
         roles(model, sessao);
@@ -81,9 +80,12 @@ public class ProblemaController {
 
     @RequestMapping(value = "/send_submission", method = RequestMethod.POST)
     public String enviarProblema(long id_problema, @RequestParam("codigo") String codigo,
-            @RequestParam("linguagem") String linguagem, HttpSession sessao) {
+            @RequestParam("linguagem") String linguagem, HttpSession sessao, Model model) {
         Usuario online = (Usuario) sessao.getAttribute("usuario");
-        Submissao s = new Submissao(id_problema, online.getId(), codigo, "Evaluating", linguagem, 
+        if (Validador.validarSubmit(codigo, model)) {
+            return Submeterproblemas(id_problema, model, sessao);
+        }
+        Submissao s = new Submissao(id_problema, online.getId(), codigo, "Evaluating", linguagem,
                 online.getLogin());
         repositorio.submeter(s);
         return "redirect:status";

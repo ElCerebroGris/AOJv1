@@ -16,29 +16,29 @@
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/jquery.validate.min.js"></script>
-        <script type="text/javascript" href="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
 
     </head>
     <body>
-        <c:import url="../templates/header.jsp"/>
+
 
         <div class="container">
             <div class="row alert">
-
+                <c:import url="../templates/header.jsp"/>
                 <div class="col-md-4">
                     <c:import url="../templates/menu_esquerdo.jsp"/>
                 </div>
 
                 <div class="col-md-8">
                     <div class="panel panel-default">
-                        
+
                         <div class="panel-heading">
                             <h3 class="panel-title">Administration panel: Create Problem</h3>
                         </div>
-                        
+
                         <div class="panel-body">
-                            
+
                             <sf:form modelAttribute="problema" id="formulario" action="add_problem" enctype="multipart/form-data">
                                 <div class="row">
 
@@ -144,11 +144,11 @@
                         </div>  
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!--Codigo JSP para colocar o footer-->    
-        <c:import url="../templates/footer.jsp"/>
+            </div>
+            <!--Codigo JSP para colocar o footer-->    
+            <c:import url="../templates/footer.jsp"/>
+        </div>
 
         <!--Codigo JavaScript para funcionar a busca de fixeiro-->  
         <script type="text/javascript">

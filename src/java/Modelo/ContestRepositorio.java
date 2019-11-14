@@ -6,6 +6,7 @@
 package Modelo;
 
 import Entidades.Contest;
+import Entidades.PLanguage;
 import Entidades.Problema;
 import Entidades.ProblemaAd;
 import Entidades.Submissao;
@@ -34,4 +35,8 @@ public interface ContestRepositorio {
     Vector<Submissao> list_submission(long cid);
     boolean isContestant(long cid, long uid);
     Vector<ProblemaAd> list_user_problem_contest(Contest c, long uid);
+    void desactive_contest(long cid);
+    void active_contest(long cid);
+    List<PLanguage> statistics();
+    List<PLanguage> statistics(long cid);
 }

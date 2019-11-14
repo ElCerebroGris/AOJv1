@@ -158,8 +158,8 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
             ps.executeQuery();
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                u = new Usuario(rs.getLong("id_usuario"), rs.getString("login"), rs.getString("gender")
-                        , rs.getString("country"), rs.getString("institution"),rs.getFloat("pontos"), 
+                u = new Usuario(rs.getLong("id_usuario"), rs.getString("login"), rs.getString("gender"),
+                         rs.getString("country"), rs.getString("institution"), rs.getFloat("pontos"),
                         rs.getString("last_submission"), rs.getInt("solved"));
                 u.setProblems(problemasResolvidos(uid));
             }
@@ -170,7 +170,7 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
         return u;
     }
 
-    private Vector<ProblemaAd> problemasResolvidos(long uid){
+    private Vector<ProblemaAd> problemasResolvidos(long uid) {
         Vector<ProblemaAd> lista = new Vector<>();
 
         try {
@@ -191,6 +191,29 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
             JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
         }
         return lista;
+    }
+
+    @Override
+    public Usuario editar(Usuario u) {
+        /*try {
+            Connection connect = ConectaNormal.getConnection();
+            String sql1 = "UPDATE usuario "
+                    + "SET "
+                    + "WHERE id_usuario="+u.getId();
+            
+            String sql = "insert into usuario "
+                    + "values (" + u.getFirst_name() + "','" + u.getLogin()
+                    + "','" + u.getPassword() + "','" + u.getLast_name() + "', 0.0, 2, "
+                    + "'" + u.getEmail() + "','" + u.getGender() + "','" + u.getCountry() + "',"
+                    + "'" + u.getInstitution() + "');";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeUpdate();
+            connect.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD");
+        }*/
+        return u;
     }
 
 }

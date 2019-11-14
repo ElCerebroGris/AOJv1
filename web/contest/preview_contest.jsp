@@ -28,10 +28,11 @@
     </head>
 
     <body>
-        <c:import url="../templates/header.jsp"/>
 
         <div class="container">
             <div class="row alert">
+                <c:import url="../templates/header.jsp"/>
+                
                 <div class="col-md-4">
                     <c:import url="../templates/menu_contest.jsp"/>
                 </div>
@@ -61,6 +62,7 @@
                     </div>
                 </div>
             </div>
+            <c:import url="../templates/footer.jsp"/>
         </div>
         <script>
             $(document).ready(function () {
@@ -68,5 +70,5 @@
             });
         </script>
     </body>
-    <c:import url="../templates/footer.jsp"/>
+
 </html>

@@ -8,6 +8,7 @@ package Modelo;
 import BD.ConectaNormal;
 import Entidades.Problema;
 import Entidades.ProblemaAd;
+import Entidades.Team;
 import Entidades.Usuario;
 import Tools.Ficheiro;
 import Tools.Iniciar;
@@ -21,6 +22,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -29,6 +31,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AdminRepositorioImpl implements AdminRepositorio {
+
+    private UsuarioRepositorio repositorio_usuario;
+
+    @Autowired
+    public AdminRepositorioImpl(UsuarioRepositorio ru) {
+        this.repositorio_usuario = ru;
+    }
 
     @Override
     public void desabilitarProblema(long pid) {
@@ -148,7 +157,7 @@ public class AdminRepositorioImpl implements AdminRepositorio {
     public ProblemaAd createProblem(ProblemaAd p) {
         int c = -1;
         try {
-            c = quantProblemas("problema");
+            c = quantGeral("problema");
             c++;
             p.setId(c);
 
@@ -159,10 +168,9 @@ public class AdminRepositorioImpl implements AdminRepositorio {
             p.setExemploSaida(res[2]);
             p.setExpecificacaoEntrada(res[3]);
             p.setExpecificacaoSaida(res[4]);
-            
+
             //File f = new File(Iniciar.getUrl() + "Problemas/P_" + p.getId());
             //Files.createDirectory(f.toPath());
-            
             File fin;
 
             for (int i = 0; i < p.getEntrada().size(); i++) {
@@ -201,7 +209,7 @@ public class AdminRepositorioImpl implements AdminRepositorio {
         return p;
     }
 
-    private static int quantProblemas(String tabela) {
+    private static int quantGeral(String tabela) {
         int r = -1;
         Connection connect;
         try {
@@ -247,6 +255,54 @@ public class AdminRepositorioImpl implements AdminRepositorio {
             JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
         }
         return lista;
+    }
+
+    @Override
+    public List<Team> listarEquipas() {
+        List<Team> lista = new ArrayList<>();
+
+        try {
+            Connection connect = ConectaNormal.getConnection();
+            String sql = "SELECT * FROM team order by team_name;";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Team t = new Team(rs.getString("team_name"), rs.getString("user1"), rs.getString("user2"),
+                rs.getString("user3"), rs.getBoolean("active"));
+                t.setId(rs.getLong("id_team"));
+                t.setInstitution(rs.getString("institution"));
+                t.setCountry(rs.getString("country"));
+                lista.add(t);
+            }
+            connect.close();
+            return lista;
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
+        }
+        return lista;
+    }
+
+    @Override
+    public void addEquipa(Team t) {
+
+        try {
+
+            long c = quantGeral("team");
+            c++;
+            Connection connect = ConectaNormal.getConnection();
+            String sql = "insert into team "
+                    + "values (" + c + ",'" + t.getLogin() + "','" + t.getPassword() + "','" + t.getCountry()
+                    + "','" + t.getInstitution() + "','" + t.getTeam_name() + "','" + t.getUser1()
+                    + "','" + t.getUser2()+ "','" + t.getUser3() + "');";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeUpdate();
+            connect.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD");
+        }
     }
 
 }

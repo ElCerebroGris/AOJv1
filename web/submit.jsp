@@ -19,24 +19,26 @@
 
     </head>
     <body>
-        <c:import url="templates/header.jsp"/>
+
         <div class="container">
             <div class="row alert">
-                <div class="col-md-12">
+                <c:import url="templates/header.jsp"/>
+
+                <div class="col-md-4">
+                    <c:import url="templates/menu_esquerdo.jsp"/>
+                </div>
+
+                <div class="col-md-8">
                     <div class="panel panel-primary">
                         <div class="panel-heading text-center">
-                            <h4>${problema.id} - ${problema.nome}</h4>
-                            <p>time limit per test: ${problema.tempo} ms</p>
-                            <p>memory limit per test: 256 megabytes</p>
-                            <p>input: standard input</p>
-                            <p>output: standard output</p>
+                            <h4>PID : ${problema.id} - ${problema.nome}</h4>
                         </div>
                         <div class="panel-body">
-                            <i class="text-center h4">Submit your soluction for the probem</i>
+                            <i class="text-center h4">Submete a tua solução para este poblema</i>
 
                             <form action="send_submission?id_problema=${problema.id}" method="post" class="form-inline text-center alert" >
                                 <div class="form-group">
-                                    <label for="cboLanguage">Language</label>
+                                    <label for="cboLanguage">Linguagem</label>
                                     <select name="linguagem" class="form-control">
                                         <option value="java">Java</option>
                                         <option value="c">C</option>
@@ -45,10 +47,12 @@
                                 </div>
                                 <br>
                                 <div class="form-group">
-                                    <textarea name="codigo" cols="100" rows="25" class="form-control text-center"></textarea>
+                                    <textarea name="codigo" cols="80" rows="25" class="form-control text-center"></textarea>
+                                    <br>
+                                    <span class="label label-danger">${erros}</span>
                                 </div>
                                 <div class="text-center">
-                                    <input type="submit" class="btn btn-primary btn-lg" value="Send" />
+                                    <input type="submit" class="btn btn-primary btn-lg" value="Enviar" />
                                 </div>
                             </form>
 
@@ -56,7 +60,8 @@
                     </div>
                 </div>
             </div>
+            <c:import url="templates/footer.jsp"/>
         </div>
     </body>
-    <c:import url="templates/footer.jsp"/>
+
 </html>

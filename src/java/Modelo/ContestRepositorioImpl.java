@@ -7,7 +7,7 @@ package Modelo;
 
 import BD.ConectaNormal;
 import Entidades.Contest;
-import Entidades.Problema;
+import Entidades.PLanguage;
 import Entidades.ProblemaAd;
 import Entidades.Submissao;
 import Entidades.Usuario;
@@ -17,14 +17,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -97,7 +94,8 @@ public class ContestRepositorioImpl implements ContestRepositorio {
                 d2.setHours(Integer.parseInt(data2[1].split(":")[0]));
                 d2.setMinutes(Integer.parseInt(data2[1].split(":")[1]));
                 d2.setSeconds(0);
-                lista.add(new Contest(rs.getLong("id_contest"), rs.getString("nome"), d1, d2));
+                lista.add(new Contest(rs.getLong("id_contest"), rs.getString("nome"), d1, d2,
+                        rs.getBoolean("visible")));
             }
             connect.close();
             return lista;
@@ -135,7 +133,7 @@ public class ContestRepositorioImpl implements ContestRepositorio {
                 d2.setHours(Integer.parseInt(data2[1].split(":")[0]));
                 d2.setMinutes(Integer.parseInt(data2[1].split(":")[1]));
                 d2.setSeconds(0);
-                c = new Contest(rs.getLong("id_contest"), rs.getString("nome"), d1, d2);
+                c = new Contest(rs.getLong("id_contest"), rs.getString("nome"), d1, d2, rs.getBoolean("visible"));
             }
             //Pegar a lista dos id dos problemas deste concurso
             c.setProblems(list_problems_contest(c.getId()));
@@ -227,7 +225,15 @@ public class ContestRepositorioImpl implements ContestRepositorio {
 
     @Override
     public void remove_user_from_contest(long cid, long uid) {
-
+        try {
+            Connection connect = ConectaNormal.getConnection();
+            String sql = "delete from contest_user where id_contest=" + cid + " and id_user=" + uid + ";";
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeUpdate();
+            connect.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD");
+        }
     }
 
     @Override
@@ -336,7 +342,7 @@ public class ContestRepositorioImpl implements ContestRepositorio {
                 p.setPenalidade(rs.getInt("penality"));
                 lista.add(p);
             }
-            
+
             //Adicionar problemas q o usuario ainda não submeteu
             for (int i = 0; i < c.getProblems().size(); i++) {
                 boolean yes = false;
@@ -421,6 +427,145 @@ public class ContestRepositorioImpl implements ContestRepositorio {
             JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
         }
         return r;
+    }
+
+    @Override
+    public void desactive_contest(long cid) {
+        try {
+            Connection connect = ConectaNormal.getConnection();
+
+            String sql = "UPDATE contest SET visible=false WHERE id_contest=" + cid + ";";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeUpdate();
+            connect.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD");
+        }
+    }
+
+    @Override
+    public void active_contest(long cid) {
+        try {
+            Connection connect = ConectaNormal.getConnection();
+
+            String sql = "UPDATE contest SET visible=true WHERE id_contest=" + cid + ";";
+
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeUpdate();
+            connect.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao adicionar na BD");
+        }
+    }
+
+    @Override
+    public List<PLanguage> statistics() {
+        List<PLanguage> lista = new ArrayList<>();
+        try {
+            Connection connect = ConectaNormal.getConnection();
+            String sql = "SELECT count(*) FROM contest_submission where linguagem='java' and status='Ok';";
+            String sql1 = "SELECT count(*) FROM contest_submission where linguagem='java' and status='Compilation error';";
+            String sql2 = "SELECT count(*) FROM contest_submission where linguagem='java' and status='Time Limited Exceded';";
+            String sql3 = "SELECT count(*) FROM contest_submission where linguagem='java' and status='Wrong answer';";
+            String sql4 = "SELECT count(*) FROM contest_submission where linguagem='java' and status='Runtime error'";
+            PLanguage pl = new PLanguage();
+            pl.setName("Java");
+            
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            pl.setAC(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql1);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setCE(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql2);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setTLE(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql3);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setWA(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql4);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setRTE(rs.getLong(1));
+            
+            lista.add(pl);
+            connect.close();
+            return lista;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
+        }
+        return lista;
+    }
+
+    @Override
+    public List<PLanguage> statistics(long cid) {
+        List<PLanguage> lista = new ArrayList<>();
+        try {
+            Connection connect = ConectaNormal.getConnection();
+            String sql = "SELECT count(*) FROM contest_submission "
+                    + "WHERE id_contest="+cid+" AND linguagem='java' AND status='Ok';";
+            String sql1 = "SELECT count(*) FROM contest_submission "
+                    + "WHERE id_contest="+cid+" AND linguagem='java' AND status='Compilation error';";
+            String sql2 = "SELECT count(*) FROM contest_submission "
+                    + "WHERE id_contest="+cid+" AND linguagem='java' AND status='Time Limited Exceded';";
+            String sql3 = "SELECT count(*) FROM contest_submission "
+                    + "WHERE id_contest="+cid+" AND linguagem='java' AND status='Wrong answer';";
+            String sql4 = "SELECT count(*) FROM contest_submission "
+                    + "WHERE id_contest="+cid+" AND linguagem='java' AND status='Runtime error'";
+            PLanguage pl = new PLanguage();
+            pl.setName("Java");
+            
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            pl.setAC(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql1);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setCE(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql2);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setTLE(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql3);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setWA(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql4);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setRTE(rs.getLong(1));
+            
+            lista.add(pl);
+            connect.close();
+            return lista;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + " Erro ao pesquisar na BD ");
+        }
+        return lista;
     }
 
 }

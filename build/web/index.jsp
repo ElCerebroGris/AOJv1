@@ -21,11 +21,12 @@
     </head>
 
     <body class="">
-        <c:import url="templates/header.jsp"/>
+
         <div class="container-fluid">
             <div class="container">
 
                 <div class="row alert">
+                    <c:import url="templates/header.jsp"/>
 
                     <div class="col-sm-4">
                         <c:import url="templates/menu_esquerdo.jsp"/>
@@ -38,62 +39,63 @@
                                 <p class="panel-title">Forum</p>
                             </div>
                             <div class="panel-body">
-                                <div class="col-md-12">
-                                    <c:if test="${online eq true}">
-                                        <div class="form-group ss">
-                                            <form action="<c:url value="/comentar"/>" method="post">
-                                                <textarea name="texto" class="form-control" id="txtarea" rows="5" id="comment" 
-                                                          style="max-width:100%;max-height:95px;" placeholder="Ask here..."></textarea>
-                                                <input type="submit" class="btn btn-primary pull-right exc" id="btt" value="Share" />
-                                            </form>
-                                        </div>
-                                    </c:if>
-                                    <br><br>
+                                <c:if test="${online eq true}">
+                                    <div class="form-group ss">
+                                        <form action="<c:url value="/comentar"/>" method="post">
+                                            <textarea name="texto" class="form-control" id="txtarea" rows="5" id="comment" 
+                                                      style="max-width:100%;max-height:95px;" placeholder="Pergunte Aqui..."></textarea>
+                                            <br>
+                                            <input type="submit" class="btn btn-primary" id="btt" value="Partilhar" />
+                                        </form>
+                                    </div>
+                                </c:if>
+                                <br><br>
 
-                                    <table>
-                                        <tr class="bg-primary">
-                                            <th class="text-center">#</th>
-                                        </tr>
-                                        <c:forEach items="${mural}" var="m">
-                                            <tr>
-
-                                            <div class="media fst">
-                                                <div class="media-left">
-                                                    <img src="img/img_avatar.png" class="media-object" style="width:60px">
-                                                </div>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading">${m.usuario} <span class="text-muted small small small">posted on ${m.data}</span></h4>
-                                                    <p class="h4"><strong>${m.texto}</strong></p>
-
-                                                </div>
-
-                                            </div>
-
+                                <div class="table-responsive">
+                                    <table id="tabela" class="table">
+                                        <thead>
+                                            <tr class="bg-primary">
+                                                <th class="text-center"></th>
+                                                <th class="text-center"></th>
                                             </tr>
-
-                                        </c:forEach>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${mural}" var="m">
+                                                <tr>
+                                                    <td>${m.usuario}</td>
+                                                    <td><p>${m.texto}</p>
+                                                        <span class="text-muted small small small">posted on ${m.data}</span>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>
-
-                        <nav>
-                            <ul class="pager">
-                                <li><a href="#">Previous</a></li>
-                                <li><a href="#">Next</a></li>
-                            </ul>
-                        </nav>
-
                     </div>
 
                 </div>
-            </div>
-
-            <div class="row">
                 <c:import url="templates/footer.jsp"/>
             </div>
         </div>
 
-    </body>
+        <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/datatables.min.css" />
+    <script src="js/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tabela').DataTable({
+                "language": {
+                    "lengthMenu": "Display _MENU_ records per page",
+                    "zeroRecords": "Nothing found - sorry",
+                    "info": "Showing page _PAGE_ of _PAGES_",
+                    "infoEmpty": "No records available",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
+                }
+            });
+        });
+    </script>
+
+</body>
 </html>

@@ -7,6 +7,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.util.Vector;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
     private int role;
     private String login;
     private String password;
+    private String confirm_password;
     private String first_name;
     private String last_name;
     private String email;
@@ -26,6 +28,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
     private String country;
     private String institution;
     private String gui_language;
+    private String secure_question;
+    private String secure_answer;
+    
     private float pontos;
     private boolean state;
     private String last_submission;
@@ -274,6 +279,30 @@ public class Usuario implements Serializable, Comparable<Usuario> {
         this.total_time = total_time;
     }
 
+    public String getConfirm_password() {
+        return confirm_password;
+    }
+
+    public void setConfirm_password(String confirm_password) {
+        this.confirm_password = confirm_password;
+    }
+
+    public String getSecure_question() {
+        return secure_question;
+    }
+
+    public void setSecure_question(String secure_question) {
+        this.secure_question = secure_question;
+    }
+
+    public String getSecure_answer() {
+        return secure_answer;
+    }
+
+    public void setSecure_answer(String secure_answer) {
+        this.secure_answer = secure_answer;
+    }
+    
     @Override
     public int compareTo(Usuario o) {
         int m1 = 0;

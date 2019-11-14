@@ -32,7 +32,7 @@
                     }
                 });
             }
-            
+
             $(function () {
                 setInterval(myF, 1000);
             });
@@ -48,24 +48,17 @@
                     &#9776;
                 </button>            
                 <div class="container-fluid">
+
                     <div class="navbar-header">
                         <a class="navbar-brand display-3" href="<c:url value="/index" />"><strong>AOJ</strong></a>
                     </div>
                     <div class="collapse navbar-collapse" id="menu">
-
                         <ul class="nav navbar-nav" id="menu">
-                            <li class="active"><a href="<c:url value="/index" />" id="menu">Home</a></li>  
-                            <li><a href="<c:url value="/list_contest" />">Contest</a></li> 
-                            <li><a href="<c:url value="/problems" />">Problems</a></li> 
-                            <li><a href="<c:url value="/ranking" />">Ranking</a></li> 
-                            <li><a href="<c:url value="/status" />">Status</a></li>
-                            <li></a><a href="<c:url value="/credits" />">Credits</a></li>       
-                            <li><a href="https://icpcangola.wordpress.com" target="_blank">ACM-ICPC Angola</a></li>
+                            <li><a href="<c:url value="/index" />" id="menu">Home</a></li>
+                            <li><a href="<c:url value="/credits" />">Sobre nós</a></li>
+                            <li></a><a href="<c:url value="/credits" />">Creditos</a></li>       
+                            <li><a href="https://icpcangola.wordpress.com" target="_blank">ICPC Angola</a></li>
                         </ul>
-
-                        <div class="navbar-form navbar-right">
-                            <span><a href="?lang=en">en</a> | <a href="?lang=pt_BR">pt</a></span>
-                        </div>
 
                         <c:if test="${online eq false}">
                             <form action="<c:url value="/login"/>" method="post" class="navbar-form navbar-right">
@@ -73,7 +66,7 @@
                                     <input type="text" name="login" class="form-control" placeholder="Username">
                                     <input type="password" name="senha" class="form-control" placeholder="Password">
                                 </div>
-                                <button type="submit" class="btn btn-primary">Login</button>
+                                <button type="submit" class="btn btn-primary">Entrar</button>
                             </form>
                         </c:if>
 
@@ -83,32 +76,29 @@
                                         data-toggle="dropdown">${usuario.login}<span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="perfil?uid=${usuario.id}">View profile</a></li>
-                                    <li><a href="edit_user?uid=${usuario.id}">Edit profile</a></li>
-                                    <li><a href="<c:url value="/logout"/>">Logout</a></li>
+                                    <li><a href="perfil?uid=${usuario.id}">Ver perfil</a></li>
+                                    <li><a href="edit_user?uid=${usuario.id}">Editar perfil</a></li>
+                                    <li><a href="<c:url value="/logout"/>">Sair</a></li>
                                 </ul>
                             </div>
                         </c:if>
 
                     </div>
                 </div>
-            </nav>
-
-            <div class="container">
-                <div class="col-md-12">
-                    <div class="well">
-                        <h2>Angola Online Judge</h2>
-                        <c:if test="${online eq false}">
-                            <p>Make your <a href="<c:url value="/registrar"/>">Register</a></p>
-                        </c:if>
-                            <p>Server Time: <span id="tempo"></span></p>
-                    </div>
-                    <c:import url="/templates/alertas.jsp"/>
-                </div>
-            </div>
-
         </div>
-    </header>
+    </nav>
+
+
+    <div class="well">
+        <h2>Angola Online Judge</h2>
+        <c:if test="${online eq false}">
+            <p>Faça o seu <a href="<c:url value="/registrar"/>">Registro</a></p>
+        </c:if>
+        <p>Tempo no Servidor: <span id="tempo"></span></p>
+    </div>
+    <c:import url="/templates/alertas.jsp"/>
+
+</header>
 
 
 

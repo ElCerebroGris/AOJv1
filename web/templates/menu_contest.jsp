@@ -20,6 +20,7 @@
                     <li><a href="<c:url value="/admin_server" />">Server</a></li>
                     <li><a href="<c:url value="/problems" />">Problems</a></li>
                     <li><a href="<c:url value="/ranking" />">Users</a></li>
+                    <li><a href="<c:url value="/teams" />">Teams</a></li>
                 </ul>
             </div> 
         </div>
@@ -41,6 +42,7 @@
                     <c:if test="${contest.running eq true or contest.past eq true}">
                     <li><a href="<c:url value="/crank?cid=${contest.id}" />">Rank</a></li>
                     </c:if>
+                    <li><a href="<c:url value="/contest_statistics?cid=${contest.id}" />">Statistics</a></li>
             </ul>
         </div>
 

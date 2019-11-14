@@ -44,11 +44,13 @@
         </script>
     </head>
     <body>
-        <c:import url="../templates/header.jsp"/>
+
         <div class="container-fluid">
             <div class="container">
 
                 <div class="row alert">
+                    <c:import url="../templates/header.jsp"/>
+
                     <div class="col-md-4">
                         <c:import url="../templates/menu_esquerdo.jsp"/>
                     </div>
@@ -58,10 +60,15 @@
                                 <p class="panel-title">Add contest</p>
                             </div>
                             <div class="panel-body">
-                                <h4>Server time: </h4>
                                 <sf:form modelAttribute="contest" role="form" action="add_contest_form">
                                     <div class="form-group">
-                                        <label for="cname">Name</label>
+                                        <label>CID</label>
+                                        <div>
+                                            <sf:input id="pid" path="id"  class="form-control" readonly="true" value="0" type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cname">Contest name</label>
                                         <sf:input path="nome" id="cname" type="text" class="form-control" />
                                     </div>
 
@@ -90,7 +97,10 @@
 
                     </div>
                 </div>
+                <c:import url="../templates/footer.jsp"/>
             </div>
         </div>
+
     </body>
+
 </html>

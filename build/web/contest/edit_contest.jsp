@@ -51,10 +51,12 @@
         </script>
     </head>
     <body>
-        <c:import url="../templates/header.jsp"/>
+
         <div class="container-fluid">
             <div class="container">
                 <div class="row alert">
+                    <c:import url="../templates/header.jsp"/>
+
                     <div class="col-md-4">
                         <c:import url="../templates/menu_contest.jsp"/>
                     </div>
@@ -147,7 +149,8 @@
                                                                     ${u.login}
                                                                 </a>
                                                             </td>
-                                                            <td><a href="#" class="btn btn-danger">Remove</a></td>
+                                                            <td><a href="rem_user_contest?cid=${contest.id}&uid=${u.id}" 
+                                                                   class="btn btn-danger">Remove</a></td>
                                                         </tr>
                                                     </c:forEach>
                                                 </tbody>
@@ -164,8 +167,8 @@
                     </div>
 
                 </div>
+                <c:import url="../templates/footer.jsp"/>
             </div>
         </div>
-    </div>
-</body>
+    </body>
 </html>

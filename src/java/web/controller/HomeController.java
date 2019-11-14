@@ -6,6 +6,7 @@
 package web.controller;
 
 import Entidades.Comentario;
+import Entidades.PLanguage;
 import Entidades.Usuario;
 import Modelo.RepositorioMaster;
 import java.util.List;
@@ -25,7 +26,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class HomeController {
 
     private RepositorioMaster repositorio;
-    private Usuario u = null;
 
     @Autowired
     public HomeController(RepositorioMaster repositorio) {
@@ -35,9 +35,9 @@ public class HomeController {
     @RequestMapping(value = {"/", "/index", "/homepage"}, method = GET)
     public String home(HttpServletRequest request, Model model, HttpSession sessao) {
         List<Comentario> lista = repositorio.lista_comentarios();
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+
         model.addAttribute("mural", lista);
-        
-        u = (Usuario) sessao.getAttribute("usuario");
 
         if (u == null) {
             model.addAttribute("online", false);
@@ -52,6 +52,26 @@ public class HomeController {
             }
         }
         return "index";
+    }
+
+    @RequestMapping(value = {"/statistics_submit"}, method = GET)
+    public String view_estatisticas_submissao(HttpServletRequest request, Model model, HttpSession sessao) {
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+
+        if (u == null) {
+            model.addAttribute("online", false);
+        } else {
+            model.addAttribute("online", true);
+            if (u.getRole() == 0) {
+                model.addAttribute("admin", true);
+            } else {
+                model.addAttribute("admin", false);
+            }
+        }
+        //Result
+        List<PLanguage> lista = repositorio.statistics();
+        model.addAttribute("languages", lista);
+        return "statistics";
     }
 
     @RequestMapping(value = {"/recuperar"}, method = GET)

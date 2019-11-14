@@ -21,10 +21,11 @@
 
     </head>
     <body>
-        <c:import url="../templates/header.jsp"/>
+
         <div class="container">
 
             <div class="row alert">
+                <c:import url="../templates/header.jsp"/>
 
                 <div class="col-md-4">                    
                     <c:import url="../templates/menu_esquerdo.jsp"/>
@@ -78,7 +79,7 @@
                     </div>
                 </div>
             </div>
-
+            <c:import url="../templates/footer.jsp"/>
         </div>
         <script src="js/jquery.min.js"></script>
     <link rel="stylesheet" href="css/datatables.min.css" />
@@ -90,5 +91,4 @@
         });
     </script>
 </body>
-<c:import url="../templates/footer.jsp"/>
 </html>

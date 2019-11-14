@@ -7,6 +7,7 @@ package Modelo;
 
 import BD.ConectaNormal;
 import Entidades.Comentario;
+import Entidades.PLanguage;
 import Entidades.Problema;
 import Entidades.ProblemaAd;
 import Entidades.Submissao;
@@ -223,6 +224,58 @@ public class RepositorioMasterImpl implements RepositorioMaster {
                 lista.add(new Comentario(rs.getString("usuario"), rs.getString("texto_mural"),
                         dt.toString()));
             }
+            connect.close();
+            return lista;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex + "Erro ao pesquisar na BD");
+        }
+        return lista;
+    }
+
+    @Override
+    public List<PLanguage> statistics() {
+        List<PLanguage> lista = new ArrayList<>();
+        try {
+            Connection connect = ConectaNormal.getConnection();
+            String sql = "SELECT count(*) FROM submissao where linguagem='java' and status='Ok';";
+            String sql1 = "SELECT count(*) FROM submissao where linguagem='java' and status='Compilation error';";
+            String sql2 = "SELECT count(*) FROM submissao where linguagem='java' and status='Time Limited Exceded';";
+            String sql3 = "SELECT count(*) FROM submissao where linguagem='java' and status='Wrong answer';";
+            String sql4 = "SELECT count(*) FROM submissao where linguagem='java' and status='Runtime error'";
+            PLanguage pl = new PLanguage();
+            pl.setName("Java");
+            
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            pl.setAC(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql1);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setCE(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql2);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setTLE(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql3);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setWA(rs.getLong(1));
+            
+            ps = connect.prepareStatement(sql4);
+            ps.executeQuery();
+            rs = ps.executeQuery();
+            rs.next();
+            pl.setRTE(rs.getLong(1));
+            
+            lista.add(pl);
             connect.close();
             return lista;
         } catch (SQLException ex) {

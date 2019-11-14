@@ -19,9 +19,10 @@
 
     </head>
     <body>
-        <c:import url="../templates/header.jsp"/>
+
         <div class="container">
             <div class="row alert">
+                <c:import url="../templates/header.jsp"/>
                 <div class="col-md-4">
                     <c:import url="../templates/menu_contest.jsp"/>
                 </div>
@@ -56,7 +57,7 @@
 
                                             <%-- Para cada Usuario listar os problemas --%>
                                             <c:forEach items="${u.problems}" var="up">
-                                                
+
                                                 <c:if test="${up.penalidade > 0}">
                                                     <td class="success">+${up.penalidade}</td>
                                                 </c:if>
@@ -81,8 +82,9 @@
                     </div>
 
                 </div>
-            </div>   
+            </div>
+            <c:import url="../templates/footer.jsp"/>
         </div>
     </body>
-    <c:import url="../templates/footer.jsp"/>
+
 </html>

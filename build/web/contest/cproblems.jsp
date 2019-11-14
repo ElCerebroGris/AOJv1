@@ -19,15 +19,17 @@
     </head>
 
     <body>
-        <c:import url="../templates/header.jsp"/>
+
         <div class="container">
 
             <div class="row alert">
+                <c:import url="../templates/header.jsp"/>
+
                 <div class="col-md-4">
                     <c:import url="../templates/menu_contest.jsp"/>
                 </div>
                 <div class="col-md-8">
-                        
+
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <p class="panel-title">${contest.nome} - Problems</p>
@@ -56,12 +58,10 @@
                     </div>
                 </div>
             </div>
-
+            <c:import url="../templates/footer.jsp"/>
         </div>
 
         <script src="js/jquery.min.js"></script>
+    </body>
 
-    </script>
-</body>
-<c:import url="../templates/footer.jsp"/>
 </html>

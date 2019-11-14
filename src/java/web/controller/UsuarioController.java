@@ -7,12 +7,15 @@ package web.controller;
 
 import Entidades.Usuario;
 import Modelo.UsuarioRepositorio;
+import Tools.Validador;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,18 +50,31 @@ public class UsuarioController {
     }
 
     @RequestMapping(value = "registrar", method = RequestMethod.GET)
-    public String mostrarForm() {
+    public String mostrarForm(Model model, HttpSession sessao) {
+        Usuario u = (Usuario) sessao.getAttribute("usuario");
+        if (u == null) {
+            model.addAttribute("online", false);
+        } else {
+            model.addAttribute("online", true);
+            if (u.getRole() == 0) {
+                model.addAttribute("admin", true);
+            } else {
+                model.addAttribute("admin", false);
+            }
+        }
+        model.addAttribute("usuario", new Usuario());
         return "register";
     }
-    
+
     @RequestMapping(value = "edit_user", method = RequestMethod.GET)
     public String mostrarFormEdit(long uid, HttpServletRequest request, Model model, HttpSession sessao) {
         Usuario u1 = repositorio.procurarPorId(uid);
         model.addAttribute("user", u1);
-        
+
         Usuario u = (Usuario) sessao.getAttribute("usuario");
         if (u == null) {
             model.addAttribute("online", false);
+            return "redirect:/";
         } else {
             model.addAttribute("online", true);
             if (u.getRole() == 0) {
@@ -70,11 +86,19 @@ public class UsuarioController {
         return "edit_user";
     }
 
+    @RequestMapping(value = "editar_usuario", method = RequestMethod.POST)
+    public String validarEditar(Model model, @Valid Usuario user,
+            BindingResult bindingResult, HttpSession sessao) {
+        user = repositorio.editar(user);
+        sessao.setAttribute("usuario", user);
+        return "redirect:/perfil?uid="+user.getId();
+    }
+
     @RequestMapping(value = "perfil", method = GET)
     public String userProfile(int uid, HttpServletRequest request, Model model, HttpSession sessao) {
         Usuario u1 = repositorio.procurarPorId(uid);
         model.addAttribute("user", u1);
-        
+
         Usuario u = (Usuario) sessao.getAttribute("usuario");
         if (u == null) {
             model.addAttribute("online", false);
@@ -86,7 +110,7 @@ public class UsuarioController {
                 model.addAttribute("admin", false);
             }
         }
-        
+
         return "user_profile";
     }
 
@@ -111,27 +135,11 @@ public class UsuarioController {
     }
 
     @RequestMapping(value = "registrar", method = RequestMethod.POST)
-    public String validarRegistro(@RequestParam("login") String login,
-            @RequestParam("first_name") String first_name,
-            @RequestParam("last_name") String last_name,
-            @RequestParam("gender") String gender,
-            @RequestParam("birthday") String birthday,
-            @RequestParam("country") String country,
-            @RequestParam("institution") String institution,
-            @RequestParam("email") String email,
-            @RequestParam("gui_language") String gui_language,
-            @RequestParam("password") String password,
-            HttpSession sessao) {
-        if (repositorio.procurarExistencia(login, email)) {
-            return "register";
-        } else {
-            Usuario u = new Usuario(2, login, password, first_name, last_name, email, gender,
-                    birthday, country, institution, gui_language, 0);
-            repositorio.salvar(u);
-            sessao.setAttribute("usuario", u);
-
-            return "redirect:/index";
-        }
+    public String validarRegistro(Model model, @Valid Usuario user, 
+            BindingResult bindingResult, HttpSession sessao) {
+        user = repositorio.salvar(user);
+        sessao.setAttribute("usuario", user);
+        return "redirect:/perfil?uid="+user.getId();
     }
 
 }

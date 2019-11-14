@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>AOJ-Credits</title>
+        <title>AOJ-Creditos</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -21,27 +21,28 @@
 
     </head>
     <body>
-        <c:import url="templates/header.jsp"/>
+
         <div class="container">
             <div class="row alert">
+                <c:import url="templates/header.jsp"/>
+
                 <div class="col-md-12">
-                    <h2 class="text-center alert">AOJ exists thanks to</h2>
-                    <h3 class="text-center">Institution</h3>
+                    <h2 class="text-center alert">AOJ existe graças a</h2>
+                    <h3 class="text-center">Instituição</h3>
                     <table class="table table-bordered ">
                         <tr class="bg-primary">
-                            <th>Name</th>
+                            <th>Nome</th>
                         </tr>
                         <tr>
                             <td><a href="#" target="_blank">ISUTIC (Instituto Superior de Tecnologia de Informação e Comunicação)</a></td>
                         </tr>
-
                     </table>
-                    <h3 class="text-center">Team</h3>
+                    <h3 class="text-center">Equipa</h3>
                     <table class="table">
                         <tr class="bg-primary">
-                            <th>Name</th>
-                            <th>Intitution</th>
-                            <th>Country</th>
+                            <th>Nome</th>
+                            <th>Intituuição</th>
+                            <th>País</th>
                         </tr>
                         <tr>
                             <td>Osvaldo José Zamba Calombe</td>
@@ -55,6 +56,11 @@
                         </tr>
                         <tr>
                             <td>Ariclene Narciso</td>
+                            <td>ISUTIC</td>
+                            <td>Angola</td>
+                        </tr>
+                        <tr>
+                            <td>Hernani Neto</td>
                             <td>ISUTIC</td>
                             <td>Angola</td>
                         </tr>
@@ -81,11 +87,17 @@
                             <td>UCI</td>
                             <td>Cuba</td>
                         </tr>
+                        <tr>
+                            <td>Yamila Suarez</td>
+                            <td>UCI</td>
+                            <td>Cuba</td>
+                        </tr>
                     </table>
                 </div>
             </div>
+            <c:import url="templates/footer.jsp"/>
         </div>
-        <c:import url="templates/footer.jsp"/>
+
     </body>
 </html>
 

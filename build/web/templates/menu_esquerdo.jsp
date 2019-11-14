@@ -13,13 +13,15 @@
     <c:if test="${admin eq true}">
         <div class="panel panel-default"> 
             <div class="panel-heading"> 
-                <h3 class="panel-title">Administration</h3> 
+                <h3 class="panel-title">Administração</h3> 
             </div> 
             <div class="panel-body"> 
                 <ul style="list-style-type: none">
                     <li><a href="<c:url value="/admin_server" />">Server</a></li>
-                    <li><a href="<c:url value="/problems_admin" />">Problems</a></li>
-                    <li><a href="<c:url value="/users_admin" />">Users</a></li>
+                    <li><a href="<c:url value="/problems_admin" />">Problemas</a></li>
+                    <li><a href="<c:url value="/users_admin" />">Usuarios</a></li>
+                    <li><a href="<c:url value="/teams" />">Equipas</a></li>
+                    <li><a href="<c:url value="/teams" />">Instituição</a></li>
                 </ul>
             </div> 
         </div>
@@ -31,10 +33,18 @@
         </div> 
         <div class="panel-body"> 
             <ul style="list-style-type: none">
-                <li><a href="<c:url value="/problems" />">Problems</a></li>
+                <li><a href="<c:url value="/problems" />">Problemas</a></li>
+                <li><a href="<c:url value="/status" />">Submissões</a></li>
                 <li><a href="<c:url value="/ranking" />">Rank</a></li>
-                <li><a href="<c:url value="/list_contest" />">Contests</a></li>
-                <li><a href="<c:url value="/teams" />">Teams</a></li>
+                <li><a href="">Concursos</a>
+                    <ul>
+                        <li><a href="<c:url value="/next_contest" />">Proximo</a></li>
+                        <li><a href="<c:url value="/running_contest" />">Em execução</a></li>
+                        <li><a href="<c:url value="/past_contest" />">Passados</a></li>
+                        <li><a href="<c:url value="/global_contest_statistics" />">Statisticas</a></li>
+                    </ul>
+                </li>
+                <li><a href="<c:url value="/statistics_submit" />">Statisicas</a></li>
             </ul>
         </div>
 

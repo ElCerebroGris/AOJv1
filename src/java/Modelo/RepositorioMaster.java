@@ -6,6 +6,7 @@
 package Modelo;
 
 import Entidades.Comentario;
+import Entidades.PLanguage;
 import Entidades.Problema;
 import Entidades.ProblemaAd;
 import Entidades.Submissao;
@@ -23,5 +24,5 @@ public interface RepositorioMaster {
     ProblemaAd buscarProblemaPorId(long id);
     void comentar(Comentario c);
     List<Comentario> lista_comentarios();
-    
+    List<PLanguage> statistics();
 }

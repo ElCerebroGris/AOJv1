@@ -24,10 +24,12 @@
     </head>
 
     <body>
-        <c:import url="../templates/header.jsp"/>
+
         <div class="container-fluid">
             <div class="container">
                 <div class="row alert">
+                    <c:import url="../templates/header.jsp"/>
+
                     <div class="col-md-4">
                         <c:import url="../templates/menu_esquerdo.jsp"/>
                     </div>
@@ -38,46 +40,57 @@
                                 <p class="panel-title">Contests</p>
                             </div>
                             <div class="panel-body">
-                                <table class="table table-striped table-bordered text-center table-responsive">
+                                <table id="tabela" class="table table-striped table-bordered text-center table-responsive">
                                     <thead>
                                         <tr class="bg-primary">
                                             <th class="text-center">ID</th>
-                                            <th class="text-center">Name</th>
-                                            <th class="text-center">Start at</th>
-                                            <th class="text-center">End at</th>
-                                            <th class="text-center">State</th>
+                                            <th class="text-center">Nome</th>
+                                            <th class="text-center">Inicio</th>
+                                            <th class="text-center">Fim</th>
+                                            <th class="text-center">Estado</th>
                                                 <c:if test="${admin eq true}">
-                                                <th class="text-center">Options</th>
+                                                <th class="text-center">Opções</th>
                                                 </c:if>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <c:forEach items="${contests}" var="co">
-                                            <tr>
-                                                <td>${co.id}</td>
-                                                <td><a href="preview?cid=${co.id}">${co.nome}</a></td>
-                                                <td>
-                                                    <fmt:formatDate value="${co.inicio}" pattern="dd/MM/yyyy hh:mm:ss am" />
-                                                </td>
-                                                <td>
-                                                    <fmt:formatDate value="${co.fim}" pattern="dd/MM/yyyy hh:mm:ss am" />
-                                                </td>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${co.coming}"><span>Coming</span></c:when>
-                                                        <c:when test="${co.past}"><span>Past</span></c:when>
-                                                        <c:when test="${co.running}"><span>Running</span></c:when>
-                                                    </c:choose>
-                                                </td>
-                                                <c:if test="${admin eq true}">
+                                            <c:if test="${co.visible || admin}">
+                                                <tr>
+                                                    <td>${co.id}</td>
+                                                    <td><a href="preview?cid=${co.id}">${co.nome}</a></td>
                                                     <td>
-                                                        <a href="edit_contest?cid=${co.id}" class="btn btn-danger">Edit</a>
-                                                        <a class="btn btn-info">
-                                                            Visible
-                                                        </a>
+                                                        <fmt:formatDate value="${co.inicio}" pattern="dd/MM/yyyy hh:mm:ss am" />
                                                     </td>
-                                                </c:if>
-                                            </tr>
+                                                    <td>
+                                                        <fmt:formatDate value="${co.fim}" pattern="dd/MM/yyyy hh:mm:ss am" />
+                                                    </td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${co.coming}"><span>Coming</span></c:when>
+                                                            <c:when test="${co.past}"><span>Past</span></c:when>
+                                                            <c:when test="${co.running}"><span>Running</span></c:when>
+                                                        </c:choose>
+                                                    </td>
+                                                    <c:if test="${admin eq true}">
+                                                        <td>
+                                                            <a href="edit_contest?cid=${co.id}" class="btn btn-info">Editar</a>
+                                                            <c:choose>
+                                                                <c:when test="${co.visible}">
+                                                                    <a class="btn btn-danger" href="desactive_contest?cid=${co.id}">
+                                                                        Desactivar
+                                                                    </a>
+                                                                </c:when>
+                                                                <c:when test="${!co.visible}">
+                                                                    <a class="btn btn-info" href="active_contest?cid=${co.id}">
+                                                                        Activar
+                                                                    </a>
+                                                                </c:when>
+                                                            </c:choose>
+                                                        </td>
+                                                    </c:if>
+                                                </tr>
+                                            </c:if>
                                         </c:forEach>
                                     </tbody>
                                 </table>
@@ -85,18 +98,33 @@
 
                             <c:if test="${admin eq true}">
                                 <div class="panel-footer">
-                                    <a href="add_contest" class="btn btn-primary">Create contest</a>
+                                    <a href="add_contest" class="btn btn-primary">Criar Concurso</a>
                                 </div>
                             </c:if>
                         </div>
                     </div>
                 </div>
-
-            </div>
-            <div class="row">
                 <c:import url="../templates/footer.jsp"/>
             </div>
         </div>
 
-    </body>
+        <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/datatables.min.css" />
+    <script src="js/datatables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tabela').DataTable({
+                "language": {
+                    "lengthMenu": "Display _MENU_ records per page",
+                    "zeroRecords": "Nothing found - sorry",
+                    "info": "Showing page _PAGE_ of _PAGES_",
+                    "infoEmpty": "No records available",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
+                }
+            });
+        });
+    </script>
+
+</body>
 </html>
